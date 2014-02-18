@@ -33,6 +33,7 @@ package it.cnr.isti.hpc.dexter.eval.filter;
 
 import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -51,7 +52,7 @@ public class TopKFilter implements Filter {
 	public List<AnnotatedSpot> filter(List<AnnotatedSpot> spots) {
 		if (spots.size() < topk)
 			return spots;
+		Collections.sort(spots, new AnnotatedSpot.SortByConfidence());
 		return spots.subList(0, topk);
 	}
-
 }
