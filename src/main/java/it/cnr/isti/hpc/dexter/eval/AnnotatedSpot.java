@@ -31,6 +31,8 @@
  */
 package it.cnr.isti.hpc.dexter.eval;
 
+import java.util.Comparator;
+
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
@@ -42,6 +44,7 @@ public class AnnotatedSpot {
 	int start;
 	int end;
 	int entity;
+	String wikiname;
 	float confidenceScore;
 
 	public AnnotatedSpot() {
@@ -91,6 +94,11 @@ public class AnnotatedSpot {
 		this.end = end;
 	}
 
+	/** the length of the spot **/
+	public int getLength() {
+		return getEnd() - getStart();
+	}
+
 	public int getEntity() {
 		return entity;
 	}
@@ -107,11 +115,53 @@ public class AnnotatedSpot {
 		this.confidenceScore = confidenceScore;
 	}
 
+	public String getWikiname() {
+		return wikiname;
+	}
+
+	public void setWikiname(String wikiname) {
+		this.wikiname = wikiname;
+	}
+
 	@Override
 	public String toString() {
 		return "AnnotatedSpot [docId=" + docId + ", spot=" + spot + ", start="
-				+ start + ", end=" + end + ", entity=" + entity
-				+ ", confidenceScore=" + confidenceScore + "]";
+				+ start + ", end=" + end + ", entity=" + entity + ", wikiname="
+				+ wikiname + ", confidenceScore=" + confidenceScore + "]";
+	}
+
+	/**
+	 * Sorts from in decreasing length order of the spots
+	 * 
+	 * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
+	 * 
+	 *         Created on Feb 18, 2014
+	 */
+	public static class SortByLength implements Comparator<AnnotatedSpot> {
+
+		public int compare(AnnotatedSpot o1, AnnotatedSpot o2) {
+			return o2.getLength() - o1.getLength();
+		}
+
+	}
+
+	/**
+	 * Sorts from in decreasing confidence score order of the spots
+	 * 
+	 * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
+	 * 
+	 *         Created on Feb 18, 2014
+	 */
+	public static class SortByConfidence implements Comparator<AnnotatedSpot> {
+
+		public int compare(AnnotatedSpot o1, AnnotatedSpot o2) {
+			if (o1.getConfidenceScore() > o2.getConfidenceScore())
+				return -1;
+			if (o1.getConfidenceScore() < o2.getConfidenceScore())
+				return 1;
+			return 0;
+		}
+
 	}
 
 }
