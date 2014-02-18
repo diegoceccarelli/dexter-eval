@@ -36,6 +36,7 @@ import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import it.cnr.isti.hpc.dexter.eval.filter.Filter;
 import it.cnr.isti.hpc.dexter.eval.output.OutputResultsAppender;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public abstract class AbstractMetricValueCollector<T> implements
 
 	private int size = 0;
 	private String name = this.getClass().toString();
-	private Filter filter = null;
+	private final List<Filter> filters = new ArrayList<Filter>();
 	private final List<OutputResultsAppender<T>> appenders = new LinkedList<OutputResultsAppender<T>>();
 
 	public int size() {
@@ -61,8 +62,8 @@ public abstract class AbstractMetricValueCollector<T> implements
 
 	public void collect(List<AnnotatedSpot> predictions,
 			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator) {
-		if (filter != null) {
-			predictions = filter.filter(predictions);
+		for (Filter f : filters) {
+			predictions = f.filter(predictions);
 		}
 		eval(predictions, goldenTruth, comparator);
 		size++;
@@ -83,7 +84,7 @@ public abstract class AbstractMetricValueCollector<T> implements
 	}
 
 	public MetricValuesCollector<T> addFilter(Filter f) {
-		this.filter = f;
+		filters.add(f);
 		return this;
 	}
 
