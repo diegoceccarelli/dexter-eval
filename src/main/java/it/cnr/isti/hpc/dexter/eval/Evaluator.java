@@ -33,9 +33,10 @@ package it.cnr.isti.hpc.dexter.eval;
 
 import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import it.cnr.isti.hpc.dexter.eval.collector.MetricValuesCollector;
+import it.cnr.isti.hpc.dexter.eval.filter.Filter;
+import it.cnr.isti.hpc.dexter.eval.filter.SameAnnotatedSpotFilter;
 import it.cnr.isti.hpc.dexter.eval.reader.AnnotatedSpotReader;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,14 +59,21 @@ public class Evaluator {
 	private final AnnotatedSpotReader predictionsReader;
 	private final AnnotatedSpotReader goldenTruthReader;
 
+	private Filter sameAnnotatedSpotFilter;
+
 	public Evaluator(AnnotatedSpotReader predictionsReader,
 			AnnotatedSpotReader goldenTruthReader,
 			AnnotatedSpotComparator comparator) {
 
 		this.comparator = comparator;
+		sameAnnotatedSpotFilter = new SameAnnotatedSpotFilter(comparator);
 		collectors = new LinkedList<MetricValuesCollector>();
 		this.predictionsReader = predictionsReader;
 		this.goldenTruthReader = goldenTruthReader;
+	}
+
+	public void setSameAnnotatedSpotFilter(Filter f) {
+		sameAnnotatedSpotFilter = f;
 	}
 
 	public void run() {
@@ -87,7 +95,9 @@ public class Evaluator {
 						goldenTruthReader.getCurrentDocId());
 			} else {
 				eval(predictions, goldenTruth);
-				predictions = predictionsReader.next();
+				if (predictionsReader.hasNext()) {
+					predictions = predictionsReader.next();
+				}
 			}
 
 		}
@@ -98,13 +108,15 @@ public class Evaluator {
 	}
 
 	public void addMetricValuesCollector(MetricValuesCollector collector) {
+		collector.addFilter(sameAnnotatedSpotFilter);
 		collectors.add(collector);
 	}
 
 	public void eval(List<AnnotatedSpot> predictions,
 			List<AnnotatedSpot> goldenTruth) {
-		predictions = filterSameSpots(predictions);
-		goldenTruth = filterSameSpots(goldenTruth);
+
+		logger.info("filtering goldenTruth");
+		goldenTruth = sameAnnotatedSpotFilter.filter(goldenTruth);
 
 		for (MetricValuesCollector collector : collectors) {
 			collector.collect(predictions, goldenTruth, comparator);
@@ -116,26 +128,6 @@ public class Evaluator {
 		for (MetricValuesCollector collector : collectors) {
 			collector.finalCollect();
 		}
-	}
-
-	private List<AnnotatedSpot> filterSameSpots(List<AnnotatedSpot> spots) {
-		List<AnnotatedSpot> filtered = new ArrayList<AnnotatedSpot>();
-		for (AnnotatedSpot s : spots) {
-			boolean found = false;
-			for (AnnotatedSpot f : filtered) {
-				if (comparator.match(s, f)) {
-					found = true;
-					logger.warn("Based on the comparator, an identical spot is yet in the list, I'll ignore it");
-					logger.warn("spot in the list: {}", f);
-					logger.warn("ignored spot: {}", s);
-				}
-			}
-			if (!found) {
-				filtered.add(s);
-			}
-
-		}
-		return filtered;
 	}
 
 }

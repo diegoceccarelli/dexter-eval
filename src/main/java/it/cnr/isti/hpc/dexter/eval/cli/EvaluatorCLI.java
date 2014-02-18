@@ -33,12 +33,13 @@ package it.cnr.isti.hpc.dexter.eval.cli;
 
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.eval.Evaluator;
-import it.cnr.isti.hpc.dexter.eval.cmp.SameSpotComparator;
+import it.cnr.isti.hpc.dexter.eval.cmp.EntityComparator;
 import it.cnr.isti.hpc.dexter.eval.collector.DoubleValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.collector.IntValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.collector.MicroFMeasureValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.collector.MicroPrecisionValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.collector.MicroRecallValuesCollector;
+import it.cnr.isti.hpc.dexter.eval.filter.ThresholdFilter;
 import it.cnr.isti.hpc.dexter.eval.filter.TopKFilter;
 import it.cnr.isti.hpc.dexter.eval.metrics.FMeasureMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.FalsePositiveMetric;
@@ -48,6 +49,7 @@ import it.cnr.isti.hpc.dexter.eval.metrics.TruePositiveMetric;
 import it.cnr.isti.hpc.dexter.eval.output.ConsoleDoubleResultsAppender;
 import it.cnr.isti.hpc.dexter.eval.output.ConsoleIntResultsAppender;
 import it.cnr.isti.hpc.dexter.eval.reader.AnnotatedSpotReader;
+import it.cnr.isti.hpc.dexter.eval.reader.JsonAnnotatedSpotReader;
 import it.cnr.isti.hpc.dexter.eval.reader.TsvAnnotatedSpotReader;
 
 /**
@@ -66,19 +68,30 @@ public class EvaluatorCLI extends AbstractCommandLineInterface {
 
 	public static void main(String[] args) {
 		EvaluatorCLI cli = new EvaluatorCLI(args);
-		AnnotatedSpotReader predictionsReader = new TsvAnnotatedSpotReader(
-				cli.getInput());
-		AnnotatedSpotReader goldenTruthReader = new TsvAnnotatedSpotReader(
-				cli.getParam("gt"));
+		String input = cli.getInput();
+		String gt = cli.getParam("gt");
+		AnnotatedSpotReader predictionsReader = null;
+		AnnotatedSpotReader goldenTruthReader = null;
 
-		ConsoleDoubleResultsAppender console = new ConsoleDoubleResultsAppender()
-				.appendPartial();
-		ConsoleDoubleResultsAppender consolenp = new ConsoleDoubleResultsAppender();
-		ConsoleIntResultsAppender console2 = new ConsoleIntResultsAppender()
-				.appendPartial();
+		if (input.endsWith(".tsv") || input.endsWith(".tsv.gz")) {
+			predictionsReader = new TsvAnnotatedSpotReader(input);
+		}
+		if (input.endsWith(".json") || input.endsWith(".json.gz")) {
+			predictionsReader = new JsonAnnotatedSpotReader(input);
+		}
+
+		if (gt.endsWith(".tsv") || gt.endsWith(".tsv.gz")) {
+			goldenTruthReader = new TsvAnnotatedSpotReader(gt);
+		}
+		if (gt.endsWith(".json") || gt.endsWith(".json.gz")) {
+			goldenTruthReader = new JsonAnnotatedSpotReader(gt);
+		}
+
+		ConsoleDoubleResultsAppender console = new ConsoleDoubleResultsAppender();
+		ConsoleIntResultsAppender console2 = new ConsoleIntResultsAppender();
 
 		Evaluator evaluator = new Evaluator(predictionsReader,
-				goldenTruthReader, new SameSpotComparator());
+				goldenTruthReader, new EntityComparator());
 		evaluator.addMetricValuesCollector(new IntValuesCollector(
 				new TruePositiveMetric()).addOutputCollector(console2).setName(
 				"tp"));
@@ -105,11 +118,29 @@ public class EvaluatorCLI extends AbstractCommandLineInterface {
 				new FMeasureMetric()).addOutputCollector(console).setName(
 				"fmeasure"));
 		evaluator.addMetricValuesCollector(new MicroPrecisionValuesCollector()
-				.addOutputCollector(consolenp).setName("microP"));
+				.addOutputCollector(console).setName("microP"));
 		evaluator.addMetricValuesCollector(new MicroRecallValuesCollector()
-				.addOutputCollector(consolenp).setName("microR"));
+				.addOutputCollector(console).setName("microR"));
 		evaluator.addMetricValuesCollector(new MicroFMeasureValuesCollector()
-				.addOutputCollector(consolenp).setName("microF1"));
+				.addOutputCollector(console).setName("microF1"));
+		evaluator.addMetricValuesCollector(new MicroPrecisionValuesCollector()
+				.addOutputCollector(console).setName("microP(t=0.5)")
+				.addFilter(new ThresholdFilter(0.5)));
+		evaluator.addMetricValuesCollector(new MicroRecallValuesCollector()
+				.addOutputCollector(console).setName("microR(t=0.5)")
+				.addFilter(new ThresholdFilter(0.5)));
+		evaluator.addMetricValuesCollector(new MicroFMeasureValuesCollector()
+				.addOutputCollector(console).setName("microF1(t=0.5)")
+				.addFilter(new ThresholdFilter(0.5)));
+		evaluator.addMetricValuesCollector(new MicroPrecisionValuesCollector()
+				.addOutputCollector(console).setName("microP(t=0.9)")
+				.addFilter(new ThresholdFilter(0.9)));
+		evaluator.addMetricValuesCollector(new MicroRecallValuesCollector()
+				.addOutputCollector(console).setName("microR(t=0.9)")
+				.addFilter(new ThresholdFilter(0.9)));
+		evaluator.addMetricValuesCollector(new MicroFMeasureValuesCollector()
+				.addOutputCollector(console).setName("microF1(t=0.9)")
+				.addFilter(new ThresholdFilter(0.9)));
 
 		evaluator.run();
 	}
