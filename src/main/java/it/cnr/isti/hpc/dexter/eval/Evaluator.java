@@ -54,7 +54,7 @@ public class Evaluator {
 	private static final Logger logger = LoggerFactory
 			.getLogger(Evaluator.class);
 
-	private final List<MetricValuesCollector> collectors;
+	private final List<MetricValuesCollector<?>> collectors;
 	private final AnnotatedSpotComparator comparator;
 	private final AnnotatedSpotReader predictionsReader;
 	private final AnnotatedSpotReader goldenTruthReader;
@@ -67,7 +67,7 @@ public class Evaluator {
 
 		this.comparator = comparator;
 		sameAnnotatedSpotFilter = new SameAnnotatedSpotFilter(comparator);
-		collectors = new LinkedList<MetricValuesCollector>();
+		collectors = new LinkedList<MetricValuesCollector<?>>();
 		this.predictionsReader = predictionsReader;
 		this.goldenTruthReader = goldenTruthReader;
 	}
@@ -107,7 +107,7 @@ public class Evaluator {
 		summary();
 	}
 
-	public void addMetricValuesCollector(MetricValuesCollector collector) {
+	public void addMetricValuesCollector(MetricValuesCollector<?> collector) {
 		collector.addFilter(sameAnnotatedSpotFilter);
 		collectors.add(collector);
 	}
@@ -118,14 +118,14 @@ public class Evaluator {
 		logger.info("filtering goldenTruth");
 		goldenTruth = sameAnnotatedSpotFilter.filter(goldenTruth);
 
-		for (MetricValuesCollector collector : collectors) {
+		for (MetricValuesCollector<?> collector : collectors) {
 			collector.collect(predictions, goldenTruth, comparator);
 		}
 
 	}
 
 	public void summary() {
-		for (MetricValuesCollector collector : collectors) {
+		for (MetricValuesCollector<?> collector : collectors) {
 			collector.finalCollect();
 		}
 	}
