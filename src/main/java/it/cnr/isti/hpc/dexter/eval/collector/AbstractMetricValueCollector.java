@@ -51,7 +51,7 @@ public abstract class AbstractMetricValueCollector<T> implements
 	private int size = 0;
 	private String name = this.getClass().toString();
 	private final List<Filter> filters = new ArrayList<Filter>();
-	private final List<OutputResultsAppender<T>> appenders = new LinkedList<OutputResultsAppender<T>>();
+	private final List<OutputResultsAppender> appenders = new LinkedList<OutputResultsAppender>();
 
 	public int size() {
 		return size;
@@ -67,7 +67,7 @@ public abstract class AbstractMetricValueCollector<T> implements
 		}
 		eval(predictions, goldenTruth, comparator);
 		size++;
-		for (OutputResultsAppender<T> appender : appenders) {
+		for (OutputResultsAppender appender : appenders) {
 			if (appender.isAppendPartial()) {
 				appender.appendPartial(this);
 			}
@@ -76,7 +76,7 @@ public abstract class AbstractMetricValueCollector<T> implements
 	}
 
 	public void finalCollect() {
-		for (OutputResultsAppender<T> appender : appenders) {
+		for (OutputResultsAppender appender : appenders) {
 
 			appender.append(this);
 
@@ -89,7 +89,7 @@ public abstract class AbstractMetricValueCollector<T> implements
 	}
 
 	public MetricValuesCollector<T> addOutputCollector(
-			OutputResultsAppender<T> resultsAppender) {
+			OutputResultsAppender resultsAppender) {
 		appenders.add(resultsAppender);
 		return this;
 	}

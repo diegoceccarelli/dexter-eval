@@ -58,7 +58,7 @@ public interface MetricValuesCollector<T> {
 	public T getPartial();
 
 	public MetricValuesCollector<T> addOutputCollector(
-			OutputResultsAppender<T> resultsAppender);
+			OutputResultsAppender resultsAppender);
 
 	public double getScore();
 

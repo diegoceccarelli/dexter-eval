@@ -38,19 +38,18 @@ import it.cnr.isti.hpc.dexter.eval.collector.MetricValuesCollector;
  * 
  *         Created on Feb 17, 2014
  */
-public class ConsoleDoubleResultsAppender implements
-		OutputResultsAppender<Double> {
+public class ConsoleResultsAppender implements OutputResultsAppender {
 
 	boolean partial = false;
 
-	public ConsoleDoubleResultsAppender appendPartial() {
+	public ConsoleResultsAppender appendPartial() {
 		partial = true;
 		return this;
 	}
 
-	public void append(MetricValuesCollector<Double> metric) {
-		String value = String.format("%-40s%.3f", metric.getName(),
-				metric.getScore());
+	public void append(MetricValuesCollector<?> metric) {
+		double score = metric.getScore();
+		String value = String.format("%-40s%.3f", metric.getName(), score);
 		System.out.println(value);
 	}
 
@@ -58,10 +57,17 @@ public class ConsoleDoubleResultsAppender implements
 		return partial;
 	}
 
-	public void appendPartial(MetricValuesCollector<Double> metric) {
-
-		String value = String.format("%-40s%.3f", metric.getName(), new Double(
-				metric.getPartial()));
+	public void appendPartial(MetricValuesCollector<?> metric) {
+		Object o = metric.getPartial();
+		String value = "NONE";
+		if (o instanceof Integer) {
+			value = String.format("%-40s%d", metric.getName(),
+					metric.getPartial());
+		}
+		if (o instanceof Double) {
+			value = String.format("%-40s%.3f", metric.getName(),
+					metric.getPartial());
+		}
 		System.out.println(value);
 
 	}

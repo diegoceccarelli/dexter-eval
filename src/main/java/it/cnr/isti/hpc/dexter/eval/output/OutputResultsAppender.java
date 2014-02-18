@@ -38,12 +38,12 @@ import it.cnr.isti.hpc.dexter.eval.collector.MetricValuesCollector;
  * 
  *         Created on Feb 17, 2014
  */
-public interface OutputResultsAppender<T> {
+public interface OutputResultsAppender {
 
 	public boolean isAppendPartial();
 
-	public void appendPartial(MetricValuesCollector<T> metric);
+	public void appendPartial(MetricValuesCollector<?> metric);
 
-	public void append(MetricValuesCollector<T> metric);
+	public void append(MetricValuesCollector<?> metric);
 
 }

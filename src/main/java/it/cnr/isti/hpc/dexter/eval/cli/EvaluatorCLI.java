@@ -46,8 +46,7 @@ import it.cnr.isti.hpc.dexter.eval.metrics.FalsePositiveMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.PrecisionMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.RecallMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.TruePositiveMetric;
-import it.cnr.isti.hpc.dexter.eval.output.ConsoleDoubleResultsAppender;
-import it.cnr.isti.hpc.dexter.eval.output.ConsoleIntResultsAppender;
+import it.cnr.isti.hpc.dexter.eval.output.ConsoleResultsAppender;
 import it.cnr.isti.hpc.dexter.eval.reader.AnnotatedSpotReader;
 import it.cnr.isti.hpc.dexter.eval.reader.JsonAnnotatedSpotReader;
 import it.cnr.isti.hpc.dexter.eval.reader.TsvAnnotatedSpotReader;
@@ -87,22 +86,21 @@ public class EvaluatorCLI extends AbstractCommandLineInterface {
 			goldenTruthReader = new JsonAnnotatedSpotReader(gt);
 		}
 
-		ConsoleDoubleResultsAppender console = new ConsoleDoubleResultsAppender();
-		ConsoleIntResultsAppender console2 = new ConsoleIntResultsAppender();
+		ConsoleResultsAppender console = new ConsoleResultsAppender();
 
 		Evaluator evaluator = new Evaluator(predictionsReader,
 				goldenTruthReader, new EntityComparator());
 		evaluator.addMetricValuesCollector(new IntValuesCollector(
-				new TruePositiveMetric()).addOutputCollector(console2).setName(
+				new TruePositiveMetric()).addOutputCollector(console).setName(
 				"tp"));
 		evaluator.addMetricValuesCollector(new IntValuesCollector(
-				new TruePositiveMetric()).addOutputCollector(console2)
+				new TruePositiveMetric()).addOutputCollector(console)
 				.setName("tp@1").addFilter(new TopKFilter(1)));
 		evaluator.addMetricValuesCollector(new IntValuesCollector(
-				new FalsePositiveMetric()).addOutputCollector(console2)
-				.setName("fp"));
+				new FalsePositiveMetric()).addOutputCollector(console).setName(
+				"fp"));
 		evaluator.addMetricValuesCollector(new IntValuesCollector(
-				new FalsePositiveMetric()).addOutputCollector(console2)
+				new FalsePositiveMetric()).addOutputCollector(console)
 				.setName("fp@1").addFilter(new TopKFilter(1)));
 
 		evaluator.addMetricValuesCollector(new DoubleValuesCollector(
