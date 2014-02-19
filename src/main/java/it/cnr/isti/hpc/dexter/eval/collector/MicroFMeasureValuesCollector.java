@@ -49,6 +49,7 @@ public class MicroFMeasureValuesCollector extends
 	MicroRecallValuesCollector recall;
 
 	public MicroFMeasureValuesCollector() {
+		this.name = "micro-F1";
 		precision = new MicroPrecisionValuesCollector();
 		recall = new MicroRecallValuesCollector();
 	}

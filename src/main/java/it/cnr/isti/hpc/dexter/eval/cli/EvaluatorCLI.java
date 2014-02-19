@@ -46,7 +46,6 @@ import it.cnr.isti.hpc.dexter.eval.metrics.FalsePositiveMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.PrecisionMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.RecallMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.TruePositiveMetric;
-import it.cnr.isti.hpc.dexter.eval.output.ConsoleResultsAppender;
 import it.cnr.isti.hpc.dexter.eval.reader.AnnotatedSpotReader;
 import it.cnr.isti.hpc.dexter.eval.reader.JsonAnnotatedSpotReader;
 import it.cnr.isti.hpc.dexter.eval.reader.TsvAnnotatedSpotReader;
@@ -86,59 +85,46 @@ public class EvaluatorCLI extends AbstractCommandLineInterface {
 			goldenTruthReader = new JsonAnnotatedSpotReader(gt);
 		}
 
-		ConsoleResultsAppender console = new ConsoleResultsAppender();
-
 		Evaluator evaluator = new Evaluator(predictionsReader,
 				goldenTruthReader, new EntityComparator());
 		evaluator.addMetricValuesCollector(new IntValuesCollector(
-				new TruePositiveMetric()).addOutputCollector(console).setName(
-				"tp"));
+				new TruePositiveMetric()));
 		evaluator.addMetricValuesCollector(new IntValuesCollector(
-				new TruePositiveMetric()).addOutputCollector(console)
-				.setName("tp@1").addFilter(new TopKFilter(1)));
+				new TruePositiveMetric()).addFilter(new TopKFilter(1)));
 		evaluator.addMetricValuesCollector(new IntValuesCollector(
-				new FalsePositiveMetric()).addOutputCollector(console).setName(
-				"fp"));
+				new FalsePositiveMetric()));
 		evaluator.addMetricValuesCollector(new IntValuesCollector(
-				new FalsePositiveMetric()).addOutputCollector(console)
-				.setName("fp@1").addFilter(new TopKFilter(1)));
+				new FalsePositiveMetric()).addFilter(new TopKFilter(1)));
 
 		evaluator.addMetricValuesCollector(new DoubleValuesCollector(
-				new PrecisionMetric()).addOutputCollector(console)
-				.setName("p@1").addFilter(new TopKFilter(1)));
+				new PrecisionMetric()).addFilter(new TopKFilter(1)));
 		evaluator.addMetricValuesCollector(new DoubleValuesCollector(
-				new RecallMetric()).addOutputCollector(console).setName(
-				"recall"));
+				new RecallMetric()));
 		evaluator.addMetricValuesCollector(new DoubleValuesCollector(
-				new PrecisionMetric()).addOutputCollector(console).setName(
-				"precision"));
+				new PrecisionMetric()));
 		evaluator.addMetricValuesCollector(new DoubleValuesCollector(
-				new FMeasureMetric()).addOutputCollector(console).setName(
-				"fmeasure"));
+				new FMeasureMetric()));
+		evaluator.addMetricValuesCollector(new MicroPrecisionValuesCollector());
+		evaluator.addMetricValuesCollector(new MicroRecallValuesCollector());
+		evaluator.addMetricValuesCollector(new MicroFMeasureValuesCollector());
 		evaluator.addMetricValuesCollector(new MicroPrecisionValuesCollector()
-				.addOutputCollector(console).setName("microP"));
+
+		.addFilter(new ThresholdFilter(0.5)));
 		evaluator.addMetricValuesCollector(new MicroRecallValuesCollector()
-				.addOutputCollector(console).setName("microR"));
+
+		.addFilter(new ThresholdFilter(0.5)));
 		evaluator.addMetricValuesCollector(new MicroFMeasureValuesCollector()
-				.addOutputCollector(console).setName("microF1"));
+
+		.addFilter(new ThresholdFilter(0.5)));
 		evaluator.addMetricValuesCollector(new MicroPrecisionValuesCollector()
-				.addOutputCollector(console).setName("microP(t=0.5)")
-				.addFilter(new ThresholdFilter(0.5)));
+
+		.addFilter(new ThresholdFilter(0.9)));
 		evaluator.addMetricValuesCollector(new MicroRecallValuesCollector()
-				.addOutputCollector(console).setName("microR(t=0.5)")
-				.addFilter(new ThresholdFilter(0.5)));
+
+		.addFilter(new ThresholdFilter(0.9)));
 		evaluator.addMetricValuesCollector(new MicroFMeasureValuesCollector()
-				.addOutputCollector(console).setName("microF1(t=0.5)")
-				.addFilter(new ThresholdFilter(0.5)));
-		evaluator.addMetricValuesCollector(new MicroPrecisionValuesCollector()
-				.addOutputCollector(console).setName("microP(t=0.9)")
-				.addFilter(new ThresholdFilter(0.9)));
-		evaluator.addMetricValuesCollector(new MicroRecallValuesCollector()
-				.addOutputCollector(console).setName("microR(t=0.9)")
-				.addFilter(new ThresholdFilter(0.9)));
-		evaluator.addMetricValuesCollector(new MicroFMeasureValuesCollector()
-				.addOutputCollector(console).setName("microF1(t=0.9)")
-				.addFilter(new ThresholdFilter(0.9)));
+
+		.addFilter(new ThresholdFilter(0.9)));
 
 		evaluator.run();
 	}

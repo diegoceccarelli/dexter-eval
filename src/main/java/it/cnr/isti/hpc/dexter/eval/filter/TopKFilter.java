@@ -37,6 +37,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Returns the top-k annotation with highest confidence score.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 17, 2014
@@ -54,5 +56,9 @@ public class TopKFilter implements Filter {
 			return spots;
 		Collections.sort(spots, new AnnotatedSpot.SortByConfidence());
 		return spots.subList(0, topk);
+	}
+
+	public String addFilterName(String metricName) {
+		return metricName + "@" + topk;
 	}
 }

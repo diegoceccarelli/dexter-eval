@@ -34,6 +34,7 @@ package it.cnr.isti.hpc.dexter.eval.collector;
 import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import it.cnr.isti.hpc.dexter.eval.metrics.Metric;
+import it.cnr.isti.hpc.dexter.eval.output.ConsoleResultsAppender;
 
 import java.util.List;
 
@@ -50,7 +51,9 @@ public class DoubleValuesCollector extends AbstractMetricValueCollector<Double>
 	private final Metric<Double> metric;
 
 	public DoubleValuesCollector(Metric<Double> metric) {
+		this.name = metric.getName();
 		this.metric = metric;
+		addOutputCollector(new ConsoleResultsAppender());
 		total = 0.0;
 	}
 
@@ -67,7 +70,9 @@ public class DoubleValuesCollector extends AbstractMetricValueCollector<Double>
 	}
 
 	public double getScore() {
-		return total / size();
+		if (this.serveAverageScore)
+			return total / size();
+		return total;
 	}
 
 	public Double getPartial() {

@@ -42,6 +42,14 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * Reads a list of {@link AnnotatedSpot}s encoded in tsv, one per line, sorted
+ * by document id. For each docid provides the annotations. The format of a
+ * {@link AnnotatedSpot} is: <br>
+ * 
+ * <pre>
+ *   docid \t mention \t start position \t end position \t entity-id (wiki-id) \t confidence score
+ * </pre>
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 17, 2014

@@ -36,12 +36,24 @@ import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 import java.util.List;
 
 /**
+ * A filter takes a list of annotated spots and removes all the annotations that
+ * to not satisfy certain conditions.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 17, 2014
  */
 public interface Filter {
 
+	/**
+	 * Modifies the collector name to denote the fact that this filter was
+	 * applied;
+	 */
+	public String addFilterName(String collectorName);
+
+	/**
+	 * Applies the filter to a list of annotated mentions;
+	 */
 	public List<AnnotatedSpot> filter(List<AnnotatedSpot> spots);
 
 }

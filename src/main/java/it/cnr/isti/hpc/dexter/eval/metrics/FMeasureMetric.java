@@ -21,6 +21,17 @@ import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import java.util.List;
 
 /**
+ * 
+ * Counts the F-measure, as <br/>
+ * <br/>
+ * <code>
+ *  2 * (precision * recall) / (precision + recall);
+ * </code> <br/>
+ * <br/>
+ * See {@link PrecisionMetric } and {@link RecallMetric} for more informations.
+ * 
+ * 
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 16, 2014
@@ -44,6 +55,10 @@ public class FMeasureMetric implements Metric<Double> {
 			return 0.0;
 		}
 		return 2 * (precision * recall) / (precision + recall);
+	}
+
+	public String getName() {
+		return "f1";
 	}
 
 }

@@ -34,6 +34,8 @@ package it.cnr.isti.hpc.dexter.eval.output;
 import it.cnr.isti.hpc.dexter.eval.collector.MetricValuesCollector;
 
 /**
+ * Prints the results on the std out.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 17, 2014

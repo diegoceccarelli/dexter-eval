@@ -37,6 +37,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This filter filters out all the annotations where the confidence score is
+ * below a certain threshold. Please not that if the confidence score is == the
+ * threshold the annotation is kept.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 17, 2014
@@ -57,6 +61,10 @@ public class ThresholdFilter implements Filter {
 			}
 		}
 		return filtered;
+	}
+
+	public String addFilterName(String metricName) {
+		return metricName + "[conf>= " + threshold + "]";
 	}
 
 }

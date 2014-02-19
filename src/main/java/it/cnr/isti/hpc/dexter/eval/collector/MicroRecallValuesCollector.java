@@ -51,6 +51,7 @@ public class MicroRecallValuesCollector extends
 	IntValuesCollector falseNegativeCollector;
 
 	public MicroRecallValuesCollector() {
+		this.name = "micro-R";
 		truePositivesCollector = new IntValuesCollector(
 				new TruePositiveMetric());
 		falseNegativeCollector = new IntValuesCollector(

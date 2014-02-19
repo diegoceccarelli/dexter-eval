@@ -34,6 +34,15 @@ package it.cnr.isti.hpc.dexter.eval.cmp;
 import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 
 /**
+ * This comparator was proposed in [1]:two AnnotatedSpots are the same if the
+ * are annotated with the same entity and window of texts where the two
+ * annotation was performed overlap.
+ * 
+ * [1] A Framework for Benchmarking Entity-Annotation Systems, Marco Cornolti
+ * and Paolo Ferragina and Massimiliano Ciaramita, Proceedings of the
+ * International World Wide Web Conference (WWW) (Practice & Experience Track)
+ * 2013. http://research.google.com/pubs/archive/40749.pdf
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 16, 2014

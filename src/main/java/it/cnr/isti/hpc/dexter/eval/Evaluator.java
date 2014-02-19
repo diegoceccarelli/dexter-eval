@@ -32,6 +32,7 @@
 package it.cnr.isti.hpc.dexter.eval;
 
 import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
+import it.cnr.isti.hpc.dexter.eval.cmp.SameSpotComparator;
 import it.cnr.isti.hpc.dexter.eval.collector.MetricValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.filter.Filter;
 import it.cnr.isti.hpc.dexter.eval.filter.SameAnnotatedSpotFilter;
@@ -45,6 +46,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * An evaluator evaluates a file containing the predictions against a golden
+ * truth file (using a given {@link SameSpotComparator}) and returns the values
+ * of the collectors set.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 16, 2014

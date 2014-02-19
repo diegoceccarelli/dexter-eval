@@ -21,6 +21,11 @@ import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import java.util.List;
 
 /**
+ * Counts the false negative predictions.
+ * 
+ * Please refer to <a href="http://en.wikipedia.org/wiki/Precision_and_recall">
+ * Wikipedia </a> for more informations.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 16, 2014
@@ -43,6 +48,10 @@ public class FalseNegativeMetric implements Metric<Integer> {
 			}
 		}
 		return fn;
+	}
+
+	public String getName() {
+		return "fn";
 	}
 
 }

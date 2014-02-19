@@ -34,6 +34,9 @@ package it.cnr.isti.hpc.dexter.eval.cmp;
 import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 
 /**
+ * With this comparator two AnnotatedSpots are the same if the are annotated
+ * with the same entity.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 16, 2014

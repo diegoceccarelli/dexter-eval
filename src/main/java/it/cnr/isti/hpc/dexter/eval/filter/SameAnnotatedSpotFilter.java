@@ -44,8 +44,11 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 
- * Remove occurrences of the same spots (based on the given comparator), takes
- * only the longer annotated spot
+ * Removes occurrences of the same spots (based on the given comparator), if the
+ * are more occurrences of the same spot, only the first in the order is kept,
+ * hence you can decide which annotation select in case of duplicates changing
+ * the order of the list (using the method 'presortBy'). By default, is selected
+ * the annotation with the longest spot.
  * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
@@ -86,5 +89,11 @@ public class SameAnnotatedSpotFilter implements Filter {
 
 		}
 		return filtered;
+	}
+
+	public String addFilterName(String collectorName) {
+		// this filter is always applied, i don't want to
+		// reflect that in the name;
+		return collectorName;
 	}
 }

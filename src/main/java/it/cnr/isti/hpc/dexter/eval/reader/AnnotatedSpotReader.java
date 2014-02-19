@@ -37,6 +37,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * Reads a list of predictions from a file.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 17, 2014

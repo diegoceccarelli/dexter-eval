@@ -51,6 +51,7 @@ public class MicroPrecisionValuesCollector extends
 	IntValuesCollector falsePositivesCollector;
 
 	public MicroPrecisionValuesCollector() {
+		this.name = "micro-P";
 		truePositivesCollector = new IntValuesCollector(
 				new TruePositiveMetric());
 		falsePositivesCollector = new IntValuesCollector(

@@ -44,4 +44,7 @@ import java.util.List;
 public interface Metric<T> {
 	public T eval(List<AnnotatedSpot> predictions,
 			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator);
+
+	public String getName();
+
 }

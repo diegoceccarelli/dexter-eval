@@ -34,16 +34,31 @@ package it.cnr.isti.hpc.dexter.eval.output;
 import it.cnr.isti.hpc.dexter.eval.collector.MetricValuesCollector;
 
 /**
+ * Defines an output where to send the results of a collector. You can implement
+ * this object to store the results on a file, in the format you want, or in a
+ * db etc etc.
+ * 
+ * See {@link ConsoleResultsAppender} for more details.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 17, 2014
  */
 public interface OutputResultsAppender {
 
+	/**
+	 * True if this object receives all the partial updates.
+	 */
 	public boolean isAppendPartial();
 
+	/**
+	 * Receive a partial result
+	 */
 	public void appendPartial(MetricValuesCollector<?> metric);
 
+	/**
+	 * Receive a final result
+	 */
 	public void append(MetricValuesCollector<?> metric);
 
 }

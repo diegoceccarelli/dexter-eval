@@ -21,6 +21,16 @@ import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import java.util.List;
 
 /**
+ * Compute the recall as: <br>
+ * <br>
+ * <code>
+ * 	true positive / (true positive + false negative)
+ * </code> <br>
+ * <br>
+ * 
+ * Please refer to <a href="http://en.wikipedia.org/wiki/Precision_and_recall">
+ * Wikipedia </a>.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 16, 2014
@@ -43,6 +53,10 @@ public class RecallMetric implements Metric<Double> {
 			return 0d;
 		}
 		return (tp) / (fp + tp);
+	}
+
+	public String getName() {
+		return "R";
 	}
 
 }

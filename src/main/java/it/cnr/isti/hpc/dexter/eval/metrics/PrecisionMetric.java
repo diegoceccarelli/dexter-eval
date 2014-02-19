@@ -21,6 +21,18 @@ import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import java.util.List;
 
 /**
+ * Compute the precision as: <br>
+ * <br>
+ * <code>
+ * 	true positive / (true positive + false positive)
+ * </code> <br>
+ * <br>
+ * 
+ * 
+ * 
+ * Please refer to <a href="http://en.wikipedia.org/wiki/Precision_and_recall">
+ * Wikipedia </a> for more informations.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 16, 2014
@@ -43,6 +55,10 @@ public class PrecisionMetric implements Metric<Double> {
 			return 0d;
 		}
 		return (tp) / (fn + tp);
+	}
+
+	public String getName() {
+		return "P";
 	}
 
 }

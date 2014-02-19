@@ -49,7 +49,8 @@ public abstract class AbstractMetricValueCollector<T> implements
 		MetricValuesCollector<T> {
 
 	private int size = 0;
-	private String name = this.getClass().toString();
+	protected String name = this.getClass().toString();
+	protected boolean serveAverageScore = true;
 	private final List<Filter> filters = new ArrayList<Filter>();
 	private final List<OutputResultsAppender> appenders = new LinkedList<OutputResultsAppender>();
 
@@ -57,13 +58,19 @@ public abstract class AbstractMetricValueCollector<T> implements
 		return size;
 	}
 
+	public void resetOutputCollectors() {
+		appenders.clear();
+	}
+
 	protected abstract void eval(List<AnnotatedSpot> predictions,
 			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator);
 
 	public void collect(List<AnnotatedSpot> predictions,
 			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator) {
+
 		for (Filter f : filters) {
 			predictions = f.filter(predictions);
+
 		}
 		eval(predictions, goldenTruth, comparator);
 		size++;
@@ -83,8 +90,17 @@ public abstract class AbstractMetricValueCollector<T> implements
 		}
 	}
 
+	public void setAverageScore(boolean averageScore) {
+		this.serveAverageScore = true;
+	}
+
+	public boolean averageScore() {
+		return this.serveAverageScore;
+	}
+
 	public MetricValuesCollector<T> addFilter(Filter f) {
 		filters.add(f);
+		this.name = f.addFilterName(this.name);
 		return this;
 	}
 
