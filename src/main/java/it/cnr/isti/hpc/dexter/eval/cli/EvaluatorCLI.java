@@ -89,7 +89,7 @@ public class EvaluatorCLI extends AbstractCommandLineInterface {
 		}
 		AnnotatedSpotComparator asc = factory.getComparator(cmp);
 
-		logger.info("using {}: {} ", asc.getName(), asc.getDescription());
+		System.out.println(asc.getName() + ": " + asc.getDescription());
 
 		Evaluator evaluator = new Evaluator(predictionsReader,
 				goldenTruthReader, asc);

@@ -71,7 +71,8 @@ public class TsvAnnotatedSpotReader implements AnnotatedSpotReader {
 	public TsvAnnotatedSpotReader(File annotatedSpotFile) {
 		RecordReader<TsvTuple> reader = new RecordReader<TsvTuple>(
 				annotatedSpotFile.getAbsolutePath(), new TsvRecordParser(
-						"docid", "spot", "start", "end", "entity", "score"));
+						"docid", "spot", "start", "end", "entity", "wikiname",
+						"score"));
 		iterator = reader.iterator();
 		next = iterator.next();
 
@@ -86,6 +87,7 @@ public class TsvAnnotatedSpotReader implements AnnotatedSpotReader {
 			AnnotatedSpot spot = new AnnotatedSpot();
 			spot.setSpot(next.get("spot"));
 			spot.setEntity(next.getInt("entity"));
+			spot.setWikiname(next.get("wikiname"));
 			spot.setStart(next.getInt("start"));
 			spot.setEnd(next.getInt("end"));
 			spot.setDocId(currentDocId);
