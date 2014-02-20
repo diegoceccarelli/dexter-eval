@@ -31,27 +31,45 @@
  */
 package it.cnr.isti.hpc.dexter.eval.cmp;
 
-import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * With this comparator two AnnotatedSpots are the same if the text annotated
- * (the spot) is the same (this was just for testing porposes).
- * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
- *         Created on Feb 16, 2014
+ *         Created on Feb 20, 2014
  */
-public class SameSpotComparator implements AnnotatedSpotComparator {
+public class ComparatorFactory {
 
-	public boolean match(AnnotatedSpot x, AnnotatedSpot y) {
-		return x.getSpot().equals(y.getSpot());
+	Map<String, AnnotatedSpotComparator> map = new HashMap<String, AnnotatedSpotComparator>();
+
+	public ComparatorFactory() {
+		register(new EntityComparator());
+		register(new SameSpotComparator());
+		register(new WeakAnnotationMatchComparator());
 	}
 
-	public String getName() {
-		return "spot";
+	public void register(AnnotatedSpotComparator comparator) {
+		map.put(comparator.getName(), comparator);
 	}
 
-	public String getDescription() {
-		return "With this comparator two AnnotatedSpots are the same if the text annotated (the spot/mention) is the same (this was just for testing porposes)";
+	public boolean contains(String name) {
+		return map.containsKey(name);
 	}
+
+	public String getUsage() {
+		StringBuffer sb = new StringBuffer();
+		for (AnnotatedSpotComparator cmp : map.values()) {
+			String value = String.format("%-10s%s", cmp.getName(),
+					cmp.getDescription());
+			sb.append(value);
+			sb.append('\n');
+		}
+		return sb.toString();
+	}
+
+	public AnnotatedSpotComparator getComparator(String name) {
+		return map.get(name);
+	}
+
 }

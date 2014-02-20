@@ -47,4 +47,11 @@ public class EntityComparator implements AnnotatedSpotComparator {
 		return x.getEntity() == y.getEntity();
 	}
 
+	public String getName() {
+		return "Sc2W";
+	}
+
+	public String getDescription() {
+		return "With this comparator two AnnotatedSpots are the same if the are annotated with the same entity";
+	}
 }

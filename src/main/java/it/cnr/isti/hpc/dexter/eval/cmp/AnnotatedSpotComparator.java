@@ -60,4 +60,8 @@ public interface AnnotatedSpotComparator {
 	 */
 	public boolean match(AnnotatedSpot x, AnnotatedSpot y);
 
+	public String getName();
+
+	public String getDescription();
+
 }

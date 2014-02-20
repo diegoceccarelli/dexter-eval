@@ -33,10 +33,14 @@ package it.cnr.isti.hpc.dexter.eval.cli;
 
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.eval.Evaluator;
-import it.cnr.isti.hpc.dexter.eval.cmp.EntityComparator;
+import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
+import it.cnr.isti.hpc.dexter.eval.cmp.ComparatorFactory;
 import it.cnr.isti.hpc.dexter.eval.reader.AnnotatedSpotReader;
 import it.cnr.isti.hpc.dexter.eval.reader.JsonAnnotatedSpotReader;
 import it.cnr.isti.hpc.dexter.eval.reader.TsvAnnotatedSpotReader;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
@@ -45,8 +49,10 @@ import it.cnr.isti.hpc.dexter.eval.reader.TsvAnnotatedSpotReader;
  */
 public class EvaluatorCLI extends AbstractCommandLineInterface {
 
-	private static String usage = "java -jar $jar  it.cnr.isti.hpc.dexter.eval.cli.EvaluatorCLI -input predictions.tsv[.gz] -gt goldentruth.tsv[.gz]";
-	private static String[] params = new String[] { INPUT, "gt" };
+	private static final Logger logger = LoggerFactory
+			.getLogger(EvaluatorCLI.class);
+	private static String usage = "java -jar $jar  it.cnr.isti.hpc.dexter.eval.cli.EvaluatorCLI -input predictions.tsv[.gz] -gt goldentruth.tsv[.gz] -cmp comparatorname";
+	private static String[] params = new String[] { INPUT, "gt", "cmp" };
 
 	public EvaluatorCLI(String[] args) {
 		super(args, params, usage);
@@ -73,8 +79,20 @@ public class EvaluatorCLI extends AbstractCommandLineInterface {
 			goldenTruthReader = new JsonAnnotatedSpotReader(gt);
 		}
 
+		String cmp = cli.getParam("cmp");
+
+		ComparatorFactory factory = new ComparatorFactory();
+		if (!factory.contains(cmp)) {
+			logger.warn("cannot find comparator : {}", cmp);
+			System.out.println(factory.getUsage());
+			System.exit(-1);
+		}
+		AnnotatedSpotComparator asc = factory.getComparator(cmp);
+
+		logger.info("using {}: {} ", asc.getName(), asc.getDescription());
+
 		Evaluator evaluator = new Evaluator(predictionsReader,
-				goldenTruthReader, new EntityComparator());
+				goldenTruthReader, asc);
 		evaluator.run();
 	}
 }

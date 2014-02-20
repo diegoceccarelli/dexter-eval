@@ -66,4 +66,12 @@ public class WeakAnnotationMatchComparator implements AnnotatedSpotComparator {
 		return false;
 
 	}
+
+	public String getName() {
+		return "weak";
+	}
+
+	public String getDescription() {
+		return "two AnnotatedSpots are the same if they are annotated with the same entity and window of texts where the two annotation was performed overlap";
+	}
 }
