@@ -33,6 +33,7 @@ package it.cnr.isti.hpc.dexter.eval.collector;
 
 import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
+import it.cnr.isti.hpc.dexter.eval.output.ConsoleResultsAppender;
 
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class MicroFMeasureValuesCollector extends
 		this.name = "micro-F1";
 		precision = new MicroPrecisionValuesCollector();
 		recall = new MicroRecallValuesCollector();
+		addOutputCollector(new ConsoleResultsAppender());
 	}
 
 	@Override

@@ -34,18 +34,6 @@ package it.cnr.isti.hpc.dexter.eval.cli;
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.eval.Evaluator;
 import it.cnr.isti.hpc.dexter.eval.cmp.EntityComparator;
-import it.cnr.isti.hpc.dexter.eval.collector.DoubleValuesCollector;
-import it.cnr.isti.hpc.dexter.eval.collector.IntValuesCollector;
-import it.cnr.isti.hpc.dexter.eval.collector.MicroFMeasureValuesCollector;
-import it.cnr.isti.hpc.dexter.eval.collector.MicroPrecisionValuesCollector;
-import it.cnr.isti.hpc.dexter.eval.collector.MicroRecallValuesCollector;
-import it.cnr.isti.hpc.dexter.eval.filter.ThresholdFilter;
-import it.cnr.isti.hpc.dexter.eval.filter.TopKFilter;
-import it.cnr.isti.hpc.dexter.eval.metrics.FMeasureMetric;
-import it.cnr.isti.hpc.dexter.eval.metrics.FalsePositiveMetric;
-import it.cnr.isti.hpc.dexter.eval.metrics.PrecisionMetric;
-import it.cnr.isti.hpc.dexter.eval.metrics.RecallMetric;
-import it.cnr.isti.hpc.dexter.eval.metrics.TruePositiveMetric;
 import it.cnr.isti.hpc.dexter.eval.reader.AnnotatedSpotReader;
 import it.cnr.isti.hpc.dexter.eval.reader.JsonAnnotatedSpotReader;
 import it.cnr.isti.hpc.dexter.eval.reader.TsvAnnotatedSpotReader;
@@ -87,45 +75,6 @@ public class EvaluatorCLI extends AbstractCommandLineInterface {
 
 		Evaluator evaluator = new Evaluator(predictionsReader,
 				goldenTruthReader, new EntityComparator());
-		evaluator.addMetricValuesCollector(new IntValuesCollector(
-				new TruePositiveMetric()));
-		evaluator.addMetricValuesCollector(new IntValuesCollector(
-				new TruePositiveMetric()).addFilter(new TopKFilter(1)));
-		evaluator.addMetricValuesCollector(new IntValuesCollector(
-				new FalsePositiveMetric()));
-		evaluator.addMetricValuesCollector(new IntValuesCollector(
-				new FalsePositiveMetric()).addFilter(new TopKFilter(1)));
-
-		evaluator.addMetricValuesCollector(new DoubleValuesCollector(
-				new PrecisionMetric()).addFilter(new TopKFilter(1)));
-		evaluator.addMetricValuesCollector(new DoubleValuesCollector(
-				new RecallMetric()));
-		evaluator.addMetricValuesCollector(new DoubleValuesCollector(
-				new PrecisionMetric()));
-		evaluator.addMetricValuesCollector(new DoubleValuesCollector(
-				new FMeasureMetric()));
-		evaluator.addMetricValuesCollector(new MicroPrecisionValuesCollector());
-		evaluator.addMetricValuesCollector(new MicroRecallValuesCollector());
-		evaluator.addMetricValuesCollector(new MicroFMeasureValuesCollector());
-		evaluator.addMetricValuesCollector(new MicroPrecisionValuesCollector()
-
-		.addFilter(new ThresholdFilter(0.5)));
-		evaluator.addMetricValuesCollector(new MicroRecallValuesCollector()
-
-		.addFilter(new ThresholdFilter(0.5)));
-		evaluator.addMetricValuesCollector(new MicroFMeasureValuesCollector()
-
-		.addFilter(new ThresholdFilter(0.5)));
-		evaluator.addMetricValuesCollector(new MicroPrecisionValuesCollector()
-
-		.addFilter(new ThresholdFilter(0.9)));
-		evaluator.addMetricValuesCollector(new MicroRecallValuesCollector()
-
-		.addFilter(new ThresholdFilter(0.9)));
-		evaluator.addMetricValuesCollector(new MicroFMeasureValuesCollector()
-
-		.addFilter(new ThresholdFilter(0.9)));
-
 		evaluator.run();
 	}
 }

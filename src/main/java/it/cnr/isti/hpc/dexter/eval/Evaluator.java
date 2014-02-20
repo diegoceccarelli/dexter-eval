@@ -33,11 +33,21 @@ package it.cnr.isti.hpc.dexter.eval;
 
 import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import it.cnr.isti.hpc.dexter.eval.cmp.SameSpotComparator;
+import it.cnr.isti.hpc.dexter.eval.collector.CollectorsFactory;
+import it.cnr.isti.hpc.dexter.eval.collector.DoubleValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.collector.MetricValuesCollector;
+import it.cnr.isti.hpc.dexter.eval.collector.MicroFMeasureValuesCollector;
+import it.cnr.isti.hpc.dexter.eval.collector.MicroPrecisionValuesCollector;
+import it.cnr.isti.hpc.dexter.eval.collector.MicroRecallValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.filter.Filter;
 import it.cnr.isti.hpc.dexter.eval.filter.SameAnnotatedSpotFilter;
+import it.cnr.isti.hpc.dexter.eval.metrics.FMeasureMetric;
+import it.cnr.isti.hpc.dexter.eval.metrics.PrecisionMetric;
+import it.cnr.isti.hpc.dexter.eval.metrics.RecallMetric;
 import it.cnr.isti.hpc.dexter.eval.reader.AnnotatedSpotReader;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -59,7 +69,7 @@ public class Evaluator {
 	private static final Logger logger = LoggerFactory
 			.getLogger(Evaluator.class);
 
-	private final List<MetricValuesCollector<?>> collectors;
+	private List<MetricValuesCollector<?>> collectors;
 	private final AnnotatedSpotComparator comparator;
 	private final AnnotatedSpotReader predictionsReader;
 	private final AnnotatedSpotReader goldenTruthReader;
@@ -75,6 +85,29 @@ public class Evaluator {
 		collectors = new LinkedList<MetricValuesCollector<?>>();
 		this.predictionsReader = predictionsReader;
 		this.goldenTruthReader = goldenTruthReader;
+		String collectorsFile = System.getProperty("metrics");
+		if (collectorsFile != null) {
+			logger.info("loading metrics from {}", collectorsFile);
+			File file = new File(collectorsFile);
+			CollectorsFactory factory = new CollectorsFactory();
+			try {
+				collectors = factory.newCollectors(file);
+			} catch (IOException e) {
+				logger.warn("cannot load metric from file {}, using default",
+						collectorsFile);
+			}
+		}
+		if (collectors.isEmpty()) {
+			this.addMetricValuesCollector(new DoubleValuesCollector(
+					new PrecisionMetric()));
+			this.addMetricValuesCollector(new DoubleValuesCollector(
+					new RecallMetric()));
+			this.addMetricValuesCollector(new DoubleValuesCollector(
+					new FMeasureMetric()));
+			this.addMetricValuesCollector(new MicroPrecisionValuesCollector());
+			this.addMetricValuesCollector(new MicroRecallValuesCollector());
+			this.addMetricValuesCollector(new MicroFMeasureValuesCollector());
+		}
 	}
 
 	public void setSameAnnotatedSpotFilter(Filter f) {

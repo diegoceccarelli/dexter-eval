@@ -64,7 +64,7 @@ public class ThresholdFilter implements Filter {
 	}
 
 	public String addFilterName(String metricName) {
-		return metricName + "[conf>= " + threshold + "]";
+		return metricName + String.format("[conf>= %.3f]", threshold);
 	}
 
 }
