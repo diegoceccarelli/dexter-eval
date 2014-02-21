@@ -31,7 +31,13 @@
  */
 package it.cnr.isti.hpc.dexter.eval.output;
 
+import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
+import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import it.cnr.isti.hpc.dexter.eval.collector.MetricValuesCollector;
+import it.cnr.isti.hpc.dexter.eval.metrics.MetricUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Prints the results on the std out.
@@ -43,6 +49,7 @@ import it.cnr.isti.hpc.dexter.eval.collector.MetricValuesCollector;
 public class ConsoleResultsAppender implements OutputResultsAppender {
 
 	boolean partial = false;
+	MetricUtil utils = new MetricUtil();
 
 	public ConsoleResultsAppender appendPartial() {
 		partial = true;
@@ -59,18 +66,56 @@ public class ConsoleResultsAppender implements OutputResultsAppender {
 		return partial;
 	}
 
-	public void appendPartial(MetricValuesCollector<?> metric) {
-		Object o = metric.getPartial();
-		String value = "NONE";
+	public void appendPartial(List<AnnotatedSpot> predictions,
+			List<AnnotatedSpot> goldenTruth,
+			AnnotatedSpotComparator comparator,
+			MetricValuesCollector<?> collector) {
+		System.out.println("DOC-ID= " + goldenTruth.get(0).getDocId());
+
+		List<AnnotatedSpot> tpPredictions = new ArrayList<AnnotatedSpot>();
+		List<AnnotatedSpot> tpGoldenTruth = new ArrayList<AnnotatedSpot>();
+		List<AnnotatedSpot> fp = new ArrayList<AnnotatedSpot>();
+		List<AnnotatedSpot> fn = new ArrayList<AnnotatedSpot>();
+
+		utils.intersect(predictions, goldenTruth, tpPredictions, tpGoldenTruth,
+				fp, fn, comparator);
+
+		String value = String.format("%-40s%s", "prediction", "golden truth");
+		System.out.println(value);
+		for (int i = 0; i < tpGoldenTruth.size(); i++) {
+			value = String.format("%-40s%s", tpPredictions.get(i).asString(),
+					tpGoldenTruth.get(i).asString());
+			System.out.println(value);
+
+		}
+		for (int i = 0; i < fn.size(); i++) {
+			value = String.format("%-40s%s", "", fn.get(i).asString());
+			System.out.println(value);
+
+		}
+		for (int i = 0; i < fp.size(); i++) {
+			value = String.format("%-40s%s", fp.get(i).asString(), "");
+			System.out.println(value);
+
+		}
+
+		Object o = collector.getPartial();
+		value = "NONE";
 		if (o instanceof Integer) {
-			value = String.format("%-40s%d", metric.getName(),
-					metric.getPartial());
+			value = String.format("%-40s%d", collector.getName(),
+					collector.getPartial());
 		}
 		if (o instanceof Double) {
-			value = String.format("%-40s%.3f", metric.getName(),
-					metric.getPartial());
+			value = String.format("%-40s%.3f", collector.getName(),
+					collector.getPartial());
 		}
 		System.out.println(value);
+		System.out.println();
+
+	}
+
+	public void setPartial(boolean isPartial) {
+		partial = isPartial;
 
 	}
 }

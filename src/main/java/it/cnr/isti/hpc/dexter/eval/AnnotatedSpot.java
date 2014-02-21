@@ -119,6 +119,10 @@ public class AnnotatedSpot {
 		return wikiname;
 	}
 
+	public String asString() {
+		return spot + "<" + start + "," + end + ">[" + entity + "]";
+	}
+
 	public void setWikiname(String wikiname) {
 		this.wikiname = wikiname;
 	}

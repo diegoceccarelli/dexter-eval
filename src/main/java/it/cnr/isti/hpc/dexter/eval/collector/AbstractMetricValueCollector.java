@@ -76,7 +76,8 @@ public abstract class AbstractMetricValueCollector<T> implements
 		size++;
 		for (OutputResultsAppender appender : appenders) {
 			if (appender.isAppendPartial()) {
-				appender.appendPartial(this);
+				appender.appendPartial(predictions, goldenTruth, comparator,
+						this);
 			}
 		}
 

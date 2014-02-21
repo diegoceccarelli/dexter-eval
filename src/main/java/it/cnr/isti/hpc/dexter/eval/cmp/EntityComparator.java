@@ -48,7 +48,7 @@ public class EntityComparator implements AnnotatedSpotComparator {
 	}
 
 	public String getName() {
-		return "Sc2W";
+		return "entity";
 	}
 
 	public String getDescription() {
