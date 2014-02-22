@@ -68,7 +68,7 @@ public class WeakAnnotationMatchComparator implements AnnotatedSpotComparator {
 	}
 
 	public String getName() {
-		return "weak";
+		return "Mwa";
 	}
 
 	public String getDescription() {
