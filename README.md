@@ -22,10 +22,10 @@ as a tuple `<start, end, wiki-id, score>` where:
  * `wiki-id` the id of the entity associated by the linker;
  * `score` the confidence of the linker on the entity. associated. 
  
- Researchers produced several datasets[2] for evaluating
- entity linking methods, but **the main problem is how to evaluate?** Depending on your needs, you could only consider the annotated wiki-ids (with no interest for the positions), or you would like to ignore the entities and check if your entity linker is good in detecting the correct positions
- of the spots and so on. **Dexter-eval** allows you to 
- evaluate your method with the //metrics// you prefer. 
+Researchers produced several datasets[2] for evaluating
+entity linking methods, but **the main problem is how to evaluate?** Depending on your needs, you could only consider the annotated wiki-ids (with no interest for the positions), or you would like to ignore the entities and check if your entity linker is good in detecting the correct positions
+of the spots and so on. **Dexter-eval** allows you to 
+evaluate your method with the //metrics// you prefer. 
  
  ## How to evaluate
  
@@ -43,7 +43,8 @@ where:
 * `predictions` is a file containing the predictions of your entity linker (in the next the supported formats will be explained);
 * `golden-truth` is a file containing the golden-truth predictions;
 * `metric` how to decide if two annotations represent a **match**;
-* `conf` a file describing which measures (e.g., Precision, Recall ...) compute and how to output the values. 
+* `conf` a file describing which measures (e.g., Precision, Recall ...) compute and how to output the values.
+
 
 The folder `example` contains the `iitb` [3] dataset, and the predictions produced by the [Wikiminer](http://wikipedia-miner.cms.waikato.ac.nz/) entity linker, you can benchmark wikiminer running the command: 
 
