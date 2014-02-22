@@ -29,9 +29,26 @@ as a tuple `<start, end, wiki-id, score>` where:
  
  ## How to evaluate
  
+**setup**: just clone the project:
+
+    git clone https://github.com/diegoceccarelli/dexter-eval.git
+	cd dexter-eval
  
+**evaluate**:
+	
+	./scripts/evaluate.sh <predictions> <golden-truth> <metric> <conf>
  
- 
+where: 
+  
+* `predictions` is a file containing the predictions of your entity linker (in the next the supported formats will be explained);
+* `golden-truth` is a file containing the golden-truth predictions;
+* `metric` how to decide if two annotations represent a **match**;
+* `conf` a file describing which measures (e.g., Precision, Recall ...) compute and how to output the values. 
+
+The folder `example` contains the `iitb` [3] dataset, and the predictions produced by the [Wikiminer](http://wikipedia-miner.cms.waikato.ac.nz/) entity linker, you can benchmark wikiminer running the command: 
+
+    ./scripts/evaluate.sh example/wikiminer-iitb-predictions.json.gz example/iitb-dataset.json.gz Me example/conf-macro-measures.txt
+  
  
  
  [1] [bat-framework github](https://github.com/marcocor/bat-framework), [bat-framework website](http://acube.di.unipi.it/bat-framework/)
