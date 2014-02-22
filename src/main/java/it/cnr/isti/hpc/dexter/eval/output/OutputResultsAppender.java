@@ -31,7 +31,11 @@
  */
 package it.cnr.isti.hpc.dexter.eval.output;
 
+import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
+import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import it.cnr.isti.hpc.dexter.eval.collector.MetricValuesCollector;
+
+import java.util.List;
 
 /**
  * Defines an output where to send the results of a collector. You can implement
@@ -54,11 +58,18 @@ public interface OutputResultsAppender {
 	/**
 	 * Receive a partial result
 	 */
-	public void appendPartial(MetricValuesCollector<?> metric);
+	public void appendPartial(List<AnnotatedSpot> prediction,
+			List<AnnotatedSpot> goldenTruth,
+			AnnotatedSpotComparator comparator, MetricValuesCollector<?> metric);
 
 	/**
 	 * Receive a final result
 	 */
 	public void append(MetricValuesCollector<?> metric);
+
+	/**
+	 * ask to the the appender to print all the partial
+	 */
+	public void setPartial(boolean isPartial);
 
 }
