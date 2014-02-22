@@ -46,15 +46,25 @@ where:
 * `conf` a file describing which measures (e.g., Precision, Recall ...) compute and how to output the values.
 
 
-The folder `example` contains the `iitb` [3] dataset, and the predictions produced by the [Wikiminer](http://wikipedia-miner.cms.waikato.ac.nz/) entity linker, you can benchmark wikiminer running the command: 
+The folder `example` contains the `iitb` [3] annotated dataset, and the predictions produced by the [Wikiminer](http://wikipedia-miner.cms.waikato.ac.nz/) entity linker, you can benchmark wikiminer running the command: 
 
     ./scripts/evaluate.sh example/wikiminer-iitb-predictions.json.gz example/iitb-dataset.json.gz Me example/conf-macro-measures.txt
-  
+
+In this example, using the metric `Me`, two annotated spots will be considered the same if they have the same `wikiid`.
+
+Please note that since there could be several occurrences of the same entity (in different positions), a prediction and 
+its golden truth are always prefiltered removing multiple occurrences of the same annotation (based on the selected metric.). See the available metrics section for more details.
+Moreover invalid annotations (referring to an unknown entity, `wikiid==0`, or referring to a disambiguation page `wikiid< 0`) are currently filtered out (this is reflected by the code `[-noId][-noDisamb]` in the results). 
+
+
+
  
  
 [1] [bat-framework github](https://github.com/marcocor/bat-framework), [bat-framework website](http://acube.di.unipi.it/bat-framework/)
  
 [2] A Framework for Benchmarking Entity-Annotation Systems, Marco Cornolti and Paolo Ferragina and Massimiliano Ciaramita, Proceedings of the International World Wide Web Conference (WWW 2013) [[PDF]](http://static.googleusercontent.com/media/research.google.com/en//pubs/archive/40749.pdf). The paper describes several available datasets. 
+[3] [CSAW Dataset](http://www.cse.iitb.ac.in/~soumen/doc/CSAW/Annot/)
+
  
  
  
