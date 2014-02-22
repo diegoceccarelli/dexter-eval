@@ -31,45 +31,37 @@
  */
 package it.cnr.isti.hpc.dexter.eval.cmp;
 
-import java.util.HashMap;
-import java.util.Map;
+import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 
 /**
+ * With this comparator two AnnotatedSpots are the same if the text annotated
+ * (the spot) is the same (this was just for testing porposes).
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
- *         Created on Feb 20, 2014
+ *         Created on Feb 16, 2014
  */
-public class ComparatorFactory {
+public class WeakMentionComparator implements AnnotatedSpotComparator {
 
-	Map<String, AnnotatedSpotComparator> map = new HashMap<String, AnnotatedSpotComparator>();
-
-	public ComparatorFactory() {
-		register(new EntityComparator());
-		register(new WeakMentionComparator());
-		register(new WeakAnnotationMatchComparator());
-	}
-
-	public void register(AnnotatedSpotComparator comparator) {
-		map.put(comparator.getName(), comparator);
-	}
-
-	public boolean contains(String name) {
-		return map.containsKey(name);
-	}
-
-	public String getUsage() {
-		StringBuffer sb = new StringBuffer();
-		for (AnnotatedSpotComparator cmp : map.values()) {
-			String value = String.format("%-10s%s", cmp.getName(),
-					cmp.getDescription());
-			sb.append(value);
-			sb.append('\n');
+	public boolean match(AnnotatedSpot x, AnnotatedSpot y) {
+		if ((x.getStart() >= y.getStart()) && (x.getStart() <= y.getEnd())) {
+			return true;
 		}
-		return sb.toString();
+		if ((x.getEnd() >= y.getStart()) && (x.getEnd() <= y.getEnd())) {
+			return true;
+		}
+
+		if ((x.getStart() <= y.getStart()) && (x.getEnd() >= y.getEnd())) {
+			return true;
+		}
+		return false;
 	}
 
-	public AnnotatedSpotComparator getComparator(String name) {
-		return map.get(name);
+	public String getName() {
+		return "Mwm";
 	}
 
+	public String getDescription() {
+		return "weak mention comparator, two annotations match if their positions overlap";
+	}
 }
