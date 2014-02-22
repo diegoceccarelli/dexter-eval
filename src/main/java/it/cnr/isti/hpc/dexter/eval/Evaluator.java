@@ -32,7 +32,7 @@
 package it.cnr.isti.hpc.dexter.eval;
 
 import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
-import it.cnr.isti.hpc.dexter.eval.cmp.SameSpotComparator;
+import it.cnr.isti.hpc.dexter.eval.cmp.WeakMentionComparator;
 import it.cnr.isti.hpc.dexter.eval.collector.CollectorsFactory;
 import it.cnr.isti.hpc.dexter.eval.collector.DoubleValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.collector.MetricValuesCollector;
@@ -40,6 +40,8 @@ import it.cnr.isti.hpc.dexter.eval.collector.MicroFMeasureValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.collector.MicroPrecisionValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.collector.MicroRecallValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.filter.Filter;
+import it.cnr.isti.hpc.dexter.eval.filter.NoDisambiguationFilter;
+import it.cnr.isti.hpc.dexter.eval.filter.NoEntityFilter;
 import it.cnr.isti.hpc.dexter.eval.filter.SameAnnotatedSpotFilter;
 import it.cnr.isti.hpc.dexter.eval.metrics.FMeasureMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.PrecisionMetric;
@@ -48,6 +50,7 @@ import it.cnr.isti.hpc.dexter.eval.reader.AnnotatedSpotReader;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -57,7 +60,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * An evaluator evaluates a file containing the predictions against a golden
- * truth file (using a given {@link SameSpotComparator}) and returns the values
+ * truth file (using a given {@link WeakMentionComparator}) and returns the values
  * of the collectors set.
  * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
@@ -74,18 +77,25 @@ public class Evaluator {
 	private final AnnotatedSpotReader predictionsReader;
 	private final AnnotatedSpotReader goldenTruthReader;
 
-	private Filter sameAnnotatedSpotFilter;
+	private boolean debug = false;
+
+	private final List<Filter> prefilters = new ArrayList<Filter>();
 
 	public Evaluator(AnnotatedSpotReader predictionsReader,
 			AnnotatedSpotReader goldenTruthReader,
 			AnnotatedSpotComparator comparator) {
 
 		this.comparator = comparator;
-		sameAnnotatedSpotFilter = new SameAnnotatedSpotFilter(comparator);
+
 		collectors = new LinkedList<MetricValuesCollector<?>>();
 		this.predictionsReader = predictionsReader;
 		this.goldenTruthReader = goldenTruthReader;
 		String collectorsFile = System.getProperty("metrics");
+		String dbg = System.getProperty("debug");
+		if (dbg != null) {
+			debug = new Boolean(dbg);
+		}
+
 		if (collectorsFile != null) {
 			logger.info("loading metrics from {}", collectorsFile);
 			File file = new File(collectorsFile);
@@ -108,10 +118,22 @@ public class Evaluator {
 			this.addMetricValuesCollector(new MicroRecallValuesCollector());
 			this.addMetricValuesCollector(new MicroFMeasureValuesCollector());
 		}
+
+		addPrefilter(new NoEntityFilter());
+		addPrefilter(new NoDisambiguationFilter());
+		addPrefilter(new SameAnnotatedSpotFilter(comparator));
+
 	}
 
-	public void setSameAnnotatedSpotFilter(Filter f) {
-		sameAnnotatedSpotFilter = f;
+	public void debugOn() {
+		debug = true;
+	}
+
+	public void addPrefilter(Filter f) {
+		for (MetricValuesCollector<?> collector : collectors) {
+			collector.addFilter(f);
+		}
+		prefilters.add(f);
 	}
 
 	public void run() {
@@ -146,15 +168,52 @@ public class Evaluator {
 	}
 
 	public void addMetricValuesCollector(MetricValuesCollector<?> collector) {
-		collector.addFilter(sameAnnotatedSpotFilter);
+		for (Filter f : prefilters) {
+			collector.addFilter(f);
+		}
+
 		collectors.add(collector);
+	}
+
+	private List<AnnotatedSpot> prefilter(List<AnnotatedSpot> annotations) {
+
+		if (debug) {
+			System.out.println("---------- PREFILTERING ------------");
+
+		}
+
+		for (Filter f : prefilters) {
+
+			List<AnnotatedSpot> tmp = f.filter(annotations);
+
+			if (debug) {
+				System.out.println("---------- " + f.getClass()
+						+ " ------------");
+
+				String value = String.format("%-40s%s", "before", "after");
+				System.out.println(value);
+				for (int i = 0; i < annotations.size(); i++) {
+					if (i < tmp.size()) {
+						value = String.format("%-40s%s", annotations.get(i)
+								.asString(), tmp.get(i).asString());
+					} else {
+						value = String.format("%-40s%s", annotations.get(i)
+								.asString(), "");
+					}
+					System.out.println(value);
+				}
+
+			}
+			annotations = tmp;
+		}
+		return annotations;
 	}
 
 	public void eval(List<AnnotatedSpot> predictions,
 			List<AnnotatedSpot> goldenTruth) {
 
 		logger.info("filtering goldenTruth");
-		goldenTruth = sameAnnotatedSpotFilter.filter(goldenTruth);
+		goldenTruth = prefilter(goldenTruth);
 
 		for (MetricValuesCollector<?> collector : collectors) {
 			collector.collect(predictions, goldenTruth, comparator);
