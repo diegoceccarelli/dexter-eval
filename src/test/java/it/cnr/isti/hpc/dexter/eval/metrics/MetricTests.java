@@ -33,7 +33,7 @@ package it.cnr.isti.hpc.dexter.eval.metrics;
 
 import static org.junit.Assert.assertEquals;
 import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
-import it.cnr.isti.hpc.dexter.eval.cmp.SameSpotComparator;
+import it.cnr.isti.hpc.dexter.eval.cmp.WeakMentionComparator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public class MetricTests {
 	private static List<AnnotatedSpot> predictions2;
 	private static List<AnnotatedSpot> predictions3;
 
-	SameSpotComparator comparator = new SameSpotComparator();
+	WeakMentionComparator comparator = new WeakMentionComparator();
 
 	@BeforeClass
 	public static void setUp() {

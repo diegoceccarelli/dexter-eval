@@ -49,7 +49,7 @@ public class ComparatorTests {
 		AnnotatedSpot leonardo = new AnnotatedSpot("leonardo da vinci");
 		AnnotatedSpot vinci = new AnnotatedSpot("da vinci");
 		AnnotatedSpot leonardo2 = new AnnotatedSpot("leonardo da vinci");
-		SameSpotComparator comparator = new SameSpotComparator();
+		WeakMentionComparator comparator = new WeakMentionComparator();
 		assertTrue(comparator.match(leonardo, leonardo2));
 		assertTrue(comparator.match(leonardo2, leonardo));
 		assertFalse(comparator.match(leonardo2, vinci));
