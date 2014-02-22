@@ -27,7 +27,7 @@ entity linking methods, but **the main problem is how to evaluate?** Depending o
 of the spots and so on. **Dexter-eval** allows you to 
 evaluate your method with the //metrics// you prefer. 
  
- ## How to evaluate
+## How to evaluate
  
 **setup**: just clone the project:
 
@@ -52,9 +52,9 @@ The folder `example` contains the `iitb` [3] dataset, and the predictions produc
   
  
  
- [1] [bat-framework github](https://github.com/marcocor/bat-framework), [bat-framework website](http://acube.di.unipi.it/bat-framework/)
+[1] [bat-framework github](https://github.com/marcocor/bat-framework), [bat-framework website](http://acube.di.unipi.it/bat-framework/)
  
- [2] A Framework for Benchmarking Entity-Annotation Systems, Marco Cornolti and Paolo Ferragina and Massimiliano Ciaramita, Proceedings of the International World Wide Web Conference (WWW 2013) [pdf](http://static.googleusercontent.com/media/research.google.com/en//pubs/archive/40749.pdf). The paper describes several available datasets. 
+[2] A Framework for Benchmarking Entity-Annotation Systems, Marco Cornolti and Paolo Ferragina and Massimiliano Ciaramita, Proceedings of the International World Wide Web Conference (WWW 2013) [[PDF]](http://static.googleusercontent.com/media/research.google.com/en//pubs/archive/40749.pdf). The paper describes several available datasets. 
  
  
  
