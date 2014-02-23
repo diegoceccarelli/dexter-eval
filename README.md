@@ -121,13 +121,55 @@ and if there are multiple occurrences only item only the encountered in the list
 
 ## Configuration File
 
+The configuration file allows to define: 
+  
+  1. **Measures** the benchmark measures to compute for the predictions, with respect of the golden-truth;
+  2. **Filters** for each benchmark measure, particular filters to the predictions/golden-truth elements can be added;
+  3. **Output writers** for each benchmark measure, you can define how the results should be presented in output.
+  
+The configuration file is a plain text file where each line represents a measure. The format of a line is:
+
+	Measure[x][y][z][..]
+
+Where `Measure` is the name of a measure, and `x`,`y`,`z` and so on, are names of filters or output writers
+(that should be enclosed between brackets). You can find an example of configuration file [here](example/conf-macro-measures.txt).
+
+### Benchmark measures
+
+dexter-eval provides the following benchmark measure: 
+
+* `tp` **true positives**;
+* `fp` **false positives**;
+* `fn` **false negative**;
+* `P`  **macro precision**;
+* `R`  **macro recall**;
+* `F1`  **macro Fmeasure**;
+* `microP` **micro precision**;
+* `microR` **micro recall**;
+* `microF1` **micro Fmeasure**;
+
+For details on how the measures work and how they are computed, please refer to [[2]](#link2).
+
+### Benchmark filters
+
+You can add [filters](src/main/java/it/cnr/isti/hpc/dexter/eval/filter) that are applied to the prediction before evaluating the performance:
+
+* `[@k]` **Top-k filter**: it filters out only the top-k predictions with the highest confidence score (it expects k to be an integer). Using this filter allows to compute measures @k, for example you can compute precision at 1 adding the line `P[@1]` to the configuration file, or adding `F1[@5]` for the F1 measure at 5. 
+* `[tk]` **Threshold filter**:   it filters out only the predictions with confidence greater than k (it expects k to be a double). Using this filter allows to compute measures varying the value of the confidence. For example you can compute precision with confidence greater or equal than 0.5 adding `P[t0.5]` to the configuration file, or adding `F1[@t0.8]` for the F1 measure considering only the predictions with confidence >= 0.8.
+
+
+
+
+ 
+
  
 
 
 
 
 
-<a name="link1">[1]</a>[bat-framework github](https://github.com/marcocor/bat-framework), [bat-framework website](http://acube.di.unipi.it/bat-framework/)
+
+<a name="link1">[1]</a> The **Bat-framework**: [Code on Github](https://github.com/marcocor/bat-framework), [website](http://acube.di.unipi.it/bat-framework/)
 
 <a name="link2">[2]</a> A Framework for Benchmarking Entity-Annotation Systems, Marco Cornolti and Paolo Ferragina and Massimiliano Ciaramita, Proceedings of the International World Wide Web Conference (WWW 2013) [[PDF]](http://static.googleusercontent.com/media/research.google.com/en//pubs/archive/40749.pdf). The paper describes several available datasets. 
 
