@@ -75,11 +75,39 @@ an [annotation](https://github.com/diegoceccarelli/dexter-eval/blob/master/src/m
 * `wikiname` the label associated to the wiki-id (not mandatory);
 * `confidenceScore` the confidence score associated by the entity linker to the mapping (it is not mandatory and it is not considered in the golden-truth records).
 
+You can find an example of annotated record [here](src/test/resources/prediction-example.json) (use [this 
+service](http://jsonviewer.stack.hu/) to analyze the structure of the JSON).
 
+###The TSV form
+
+dexter-eval also supports Tab Separated Values (tsv) Files, a tsv file is composed by several lines,
+and each line represent an [annotated record](blob/master/src/main/java/it/cnr/isti/hpc/dexter/eval/AssessmentRecord.java). The format of the line 
+is: 
+
+	 docid \t spot \t start \t end \t entity (wiki-id) \t wikiname \t confidence score
+
+where:
+
+* `docId` the doc-id of the annotated record (mandatory);
+* `spot` the piece of text annotated; 
+* `start` the position in the text where the annotation starts;
+* `end` the position in the text where the annotation ends;
+* `entity` the wiki-id of the entity associated the spot;
+* `wikiname` the label associated to the wiki-id (not mandatory);
+* `confidenceScore` the confidence score associated by the entity linker to the mapping (it is not mandatory and it is not considered in the golden-truth records).
+
+If a field is not mandatory and you don't want to use it put an empty string or 0 in case of numbers,
+You can find an example of annotated record [here](blob/master/src/test/resources/goldentruth-test.tsv);
+
+### Other formats
+
+If you need to read the golden-truth and/or your predictions in other formats you can add your 
+reader implementing the [AnnotatedSpotReader](blob/master/src/main/java/it/cnr/isti/hpc/dexter/eval/reader/AnnotatedSpotReader.java)
+interface. 
 
 ## Metrics
 
-metrics 
+
 
 ## Configuration File
 
