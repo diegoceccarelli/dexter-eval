@@ -1,7 +1,7 @@
 Dexter Eval
 ===========
 
-Dexter Eval is an entity linking evaluation framework, inspired by the [bat-framework[1]](#link1).
+Dexter Eval is an entity linking evaluation framework, inspired by the [bat-framework [1]](#link1).
  
 The entity linking task aims at identifying 
 all the small text fragments in a document 
@@ -22,7 +22,7 @@ as a tuple `<start, end, wiki-id, score>` where:
  * `wiki-id` the id of the entity associated by the linker;
  * `score` the confidence of the linker on the entity. associated. 
  
-Researchers produced [several datasets[2]](#link2) for evaluating
+Researchers produced [several datasets [2]](#link2) for evaluating
 entity linking methods, but **the main problem is how to evaluate?** Depending on your needs, you could only consider the annotated wiki-ids (with no interest for the positions), or you would like to ignore the entities and check if your entity linker is good in detecting the correct positions
 of the spots and so on. **Dexter-eval** allows you to 
 evaluate your method with the //metrics// you prefer. 
@@ -60,7 +60,22 @@ In the following we will describe the [file formats](#file-formats), the availab
 
 ## File Formats
 
-dexter-eval accepts two 
+dexter-eval accepts predictions and golden-truth predictions in two different formats, i.e., **json** or **tsv**.
+
+###The JSON format
+
+A JSON file contains one [annotated record](blob/master/src/main/java/it/cnr/isti/hpc/dexter/eval/AssessmentRecord.java) per line encoded in json. A record represents a document with its annotations. An annotated record is identified by its `docid` and can contain the text of the document (but it is not mandatory). It also contains a list of annotations, where
+an [annotation](https://github.com/diegoceccarelli/dexter-eval/blob/master/src/main/java/it/cnr/isti/hpc/dexter/eval/AnnotatedSpot.java) is characterized by:
+
+* `docId` the doc-id of the annotated record (not mandatory);
+* `spot` the piece of text annotated; 
+* `start` the position in the text where the annotation starts;
+* `end` the position in the text where the annotation ends;
+* `entity` the wiki-id of the entity associated the spot;
+* `wikiname` the label associated to the wiki-id (not mandatory);
+* `confidenceScore` the confidence score associated by the entity linker to the mapping (it is not mandatory and it is not considered in the golden-truth records).
+
+
 
 ## Metrics
 
