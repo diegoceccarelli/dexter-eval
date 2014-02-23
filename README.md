@@ -6,15 +6,15 @@ Dexter Eval is an entity linking evaluation framework, inspired by the [bat-fram
 The entity linking task aims at identifying 
 all the small text fragments in a document 
 referring to an entity contained in a given 
-knowledge base. In our setting the KB is Wikipedia.
+knowledge base. In our settings the KB is Wikipedia.
 
-Given a text T,  an entity linker usually annotates
+Given a text,  an entity linker usually annotates
 it producing a list of **spots** (aka mentions, or annotations), 
-i.e., substrings of text that refer to an entity. The linker
+i.e., substrings of the text that refer to an entity. The linker
 associates to each spot a Wikipedia/Dbpedia entity 
-(represented by the Wikipedia `pageid` [details](http://www.mediawiki.org/wiki/API:Query)).
+(represented by the its Wikipedia article  `pageid` [details](http://www.mediawiki.org/wiki/API:Query)).
 
-Each annotation returned by a linker then can be represented
+Each annotation returned by a linker can be represented
 as a tuple `<start, end, wiki-id, score>` where:
 
  * `start` represents the starting position of the spot in the annotated text;
@@ -23,8 +23,8 @@ as a tuple `<start, end, wiki-id, score>` where:
  * `score` the confidence of the linker on the entity. associated. 
  
 Researchers produced [several datasets [2]](#link2) for evaluating
-entity linking methods, but **the main problem is how to evaluate?** Depending on your needs, you could only consider the annotated wiki-ids (with no interest for the positions), or you would like to ignore the entities and check if your entity linker is good in detecting the correct positions
-of the spots and so on. **Dexter-eval** allows you to 
+entity linking methods, but **the main problem is how to evaluate**: depending on your needs, you may only consider the annotated wiki-ids (with no interest for the positions), or you may prefer to ignore the entities and check if your entity linker is good in detecting the correct positions
+of the spots and so on. **dexter-eval** allows you to 
 evaluate your method with the //metrics// you prefer. 
  
 ## How to evaluate
@@ -46,15 +46,15 @@ where:
 * `conf` a file describing which measures (e.g., Precision, Recall ...) compute and how to output the values.
 
 
-The folder `example` contains the `iitb` [[3]](#link3) annotated dataset, and the predictions produced by the [Wikiminer](http://wikipedia-miner.cms.waikato.ac.nz/) entity linker, you can benchmark wikiminer running the command: 
+The folder `example` contains the `iitb` [[3]](#link3) annotated dataset, and the predictions produced by the [wikiminer entity linker](http://wikipedia-miner.cms.waikato.ac.nz/): you can benchmark wikiminer running the command: 
 
     ./scripts/evaluate.sh example/wikiminer-iitb-predictions.json.gz example/iitb-dataset.json.gz Me example/conf-macro-measures.txt
 
-In the example, using the metric `Me`, two annotated spots will be considered the same if they have the same `wikiid`.
+In the example, using the metric `Me`, two annotated spots will be considered the same if they have the same `wiki-id`.
 
 Please note that since there could be several occurrences of the same entity (in different positions), a prediction and 
-its golden truth are always prefiltered removing multiple occurrences of the same annotation (based on the selected metric.). See the available metrics section for more details.
-Moreover invalid annotations (referring to an unknown entity, `wikiid==0`, or referring to a disambiguation page `wikiid< 0`) are currently filtered out (this is reflected by the codes `[-noId][-noDisamb]` in the results). 
+its golden truth are always prefiltered removing multiple occurrences of the same annotation (based on the selected metric). See the available [metrics section](#comparison-metrics) for more details.
+Invalid annotations (referring to an unknown entity, `wiki-id==0`, or referring to a disambiguation page `wiki-id < 0`) are currently filtered out (this is reflected by the codes `[-noId][-noDisamb]` in the results). 
 
 In the following we will describe the [file formats](#file-formats), the available [metrics](#comparison-metrics), how to [write a configuration file](#configuration-file) 
 
@@ -76,12 +76,12 @@ an [annotation](src/main/java/it/cnr/isti/hpc/dexter/eval/AnnotatedSpot.java) is
 * `confidenceScore` the confidence score associated by the entity linker to the mapping (it is not mandatory and it is not considered in the golden-truth records).
 
 You can find an example of annotated record [here](src/test/resources/prediction-example.json) (use [this 
-service](http://jsonviewer.stack.hu/) to analyze the structure of the JSON).
+service](http://jsonviewer.stack.hu/) to analyze the structure of the JSON). An annotated record can be converted to json calling its instance method 'toJson()'.
 
 ###The TSV format
 
 dexter-eval also supports Tab Separated Values (tsv) Files, a tsv file is composed by several lines,
-and each line represent an [annotated record](src/main/java/it/cnr/isti/hpc/dexter/eval/AssessmentRecord.java). The format of the line 
+each line representing an [annotated spot](src/main/java/it/cnr/isti/hpc/dexter/eval/AssessmentRecord.java). The format of the line 
 is: 
 
 	 docid \t spot \t start \t end \t entity (wiki-id) \t wikiname \t confidence score
@@ -116,7 +116,7 @@ if an annotation in the predictions and an annotation in the golden-truth repres
 
 You can add a different comparison metric implementing the interface [AnnotatedSpotComparator](src/main/java/it/cnr/isti/hpc/dexter/eval/cmp/AnnotatedSpotComparator.java). 
 We remark that based on the comparison metric used, the golden truth or the prediction could contain 
-several occurrences of the same item. For this reason, before the evaluation, both the lists are checked
+several occurrences of the same item. For that reason, before the evaluation, both the lists are checked
 and if there are multiple occurrences only item only the encountered in the list will be kept. 
 
 ## Configuration File
@@ -131,12 +131,12 @@ The configuration file is a plain text file where each line represents a measure
 
 	Measure[x][y][z][..]
 
-Where `Measure` is the name of a measure, and `x`,`y`,`z` and so on, are names of filters or output writers
-(that should be enclosed between brackets). You can find an example of configuration file [here](example/conf-macro-measures.txt).
+where `Measure` is the name of a measure, and `x`,`y`,`z` and so on, are names of filters or output writers
+(they must be enclosed within brackets). You can find an example of configuration file [here](example/conf-macro-measures.txt).
 
 ### Benchmark measures
 
-dexter-eval provides the following benchmark measure: 
+The following benchmark measure are provided:
 
 * `tp` **true positives**;
 * `fp` **false positives**;
@@ -159,9 +159,9 @@ You can add [filters](src/main/java/it/cnr/isti/hpc/dexter/eval/filter) that are
 
 ### Output Writers
 
-Output can be produced in several different ways, implementing the [OutputResultsAppender](src/main/java/it/cnr/isti/hpc/dexter/eval/output/OutputResultsAppender.java) class.
+Output can be produced in several different ways, implementing the [OutputResultsAppender](src/main/java/it/cnr/isti/hpc/dexter/eval/output/OutputResultsAppender.java) interface.
 Currently dexter-eval provides only	a [console appender](src/main/java/it/cnr/isti/hpc/dexter/eval/output/ConsoleResultsAppender.java) which prints the results
-on the stdout. By default, each measure defined in the configuration file has its console appender by default,
+on the stdout. By default, each measure defined in the configuration file is associated to a console appender by default,
 but you can set up a console appender that prints all the partial evaluations (for debugging purposes) adding the code `[>c+]`.
 
 
