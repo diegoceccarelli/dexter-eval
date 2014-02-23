@@ -56,7 +56,7 @@ Please note that since there could be several occurrences of the same entity (in
 its golden truth are always prefiltered removing multiple occurrences of the same annotation (based on the selected metric.). See the available metrics section for more details.
 Moreover invalid annotations (referring to an unknown entity, `wikiid==0`, or referring to a disambiguation page `wikiid< 0`) are currently filtered out (this is reflected by the codes `[-noId][-noDisamb]` in the results). 
 
-In the following we will describe the [file formats](#file-formats), the available [metrics](#metrics), how to [write a configuration file](#configuration-file) 
+In the following we will describe the [file formats](#file-formats), the available [metrics](#comparison-metrics), how to [write a configuration file](#configuration-file) 
 
 ## File Formats
 
@@ -102,16 +102,26 @@ You can find an example of annotated record [here](src/test/resources/goldentrut
 ### Other formats
 
 If you need to read the golden-truth and/or your predictions in other formats you can add your 
-reader implementing the [AnnotatedSpotReader](src/main/java/it/cnr/isti/hpc/dexter/eval/reader/AnnotatedSpotReader.java)
-interface. 
+reader implementing the [AnnotatedSpotReader](src/main/java/it/cnr/isti/hpc/dexter/eval/reader/AnnotatedSpotReader.java) interface. 
 
-## Metrics
+## Comparison Metrics
 
+As stated in the beginning, depending on the application, there could be different ways to consider
+if an annotation in the predictions and an annotation in the golden-truth represent the same annotation
+(i.e., a match). dexter-eval provides the following metrics: 
 
+  * `Me` (match entities): two annotations are the same if the are annotated with the same entity;
+  * `Mwm` (weak mention comparator): two annotations match if their positions overlap (no checks on the correctness of the associated entity);
+  * `Mwa` (weak annotation comparator): two annotations are the same if they are annotated with the same entity and windows of text where the two annotations are performed overlap.
+
+You can add a different comparison metric implementing the interface [AnnotatedSpotComparator](src/main/java/it/cnr/isti/hpc/dexter/eval/cmp/AnnotatedSpotComparator.java). 
+We remark that based on the comparison metric used, the golden truth or the prediction could contain 
+several occurrences of the same item. For this reason, before the evaluation, both the lists are checked
+and if there are multiple occurrences only item only the encountered in the list will be kept. 
 
 ## Configuration File
 
-configuration 
+ 
 
 
 
