@@ -56,7 +56,7 @@ Please note that since there could be several occurrences of the same entity (in
 its golden truth are always prefiltered removing multiple occurrences of the same annotation (based on the selected metric.). See the available metrics section for more details.
 Moreover invalid annotations (referring to an unknown entity, `wikiid==0`, or referring to a disambiguation page `wikiid< 0`) are currently filtered out (this is reflected by the codes `[-noId][-noDisamb]` in the results). 
 
-In the following we will describe the [file formats][File Formats], the available [metrics][Metrics], how to [write a configuration file][Configuration File] 
+In the following we will describe the [file formats](#File-Formats), the available [metrics](#Metrics), how to [write a configuration file](#Configuration-File) 
 
 ## File Formats
 
