@@ -18,6 +18,8 @@ package it.cnr.isti.hpc.dexter.eval;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
@@ -27,6 +29,8 @@ public class AssessmentRecord {
 	public String docId;
 	public String text;
 	public List<AnnotatedSpot> annotatedSpot;
+
+	private static Gson gson = new Gson();
 
 	public AssessmentRecord() {
 		annotatedSpot = new ArrayList<AnnotatedSpot>();
@@ -51,6 +55,10 @@ public class AssessmentRecord {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public String toJson() {
+		return gson.toJson(this);
 	}
 
 	public List<AnnotatedSpot> getAnnotatedSpot() {
