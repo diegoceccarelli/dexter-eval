@@ -1,6 +1,4 @@
 /**
-
-
  *  Copyright 2012 Diego Ceccarelli
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +14,6 @@
  *  limitations under the License.
  */
 package it.cnr.isti.hpc.dexter.eval;
-
-import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 
 import java.util.ArrayList;
 import java.util.List;
