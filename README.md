@@ -152,22 +152,21 @@ For details on how the measures work and how they are computed, please refer to 
 
 ### Benchmark filters
 
-You can add [filters](src/main/java/it/cnr/isti/hpc/dexter/eval/filter) that are applied to the prediction before evaluating the performance:
+You can add [filters](src/main/java/it/cnr/isti/hpc/dexter/eval/filter) that are applied to the predictions before evaluating the performance:
 
 * `[@k]` **Top-k filter**: it filters out only the top-k predictions with the highest confidence score (it expects k to be an integer). Using this filter allows to compute measures @k, for example you can compute precision at 1 adding the line `P[@1]` to the configuration file, or adding `F1[@5]` for the F1 measure at 5. 
 * `[tk]` **Threshold filter**:   it filters out only the predictions with confidence greater than k (it expects k to be a double). Using this filter allows to compute measures varying the value of the confidence. For example you can compute precision with confidence greater or equal than 0.5 adding `P[t0.5]` to the configuration file, or adding `F1[@t0.8]` for the F1 measure considering only the predictions with confidence >= 0.8.
 
+### Output Writers
+
+Output can be produced in several different ways, implementing the [OutputResultsAppender](src/main/java/it/cnr/isti/hpc/dexter/eval/output/OutputResultsAppender.java) class.
+Currently dexter-eval provides only	a [console appender](src/main/java/it/cnr/isti/hpc/dexter/eval/output/ConsoleResultsAppender.java) which prints the results
+on the stdout. By default, each measure defined in the configuration file has its console appender by default,
+but you can set up a console appender that prints all the partial evaluations (for debugging purposes) adding the code `[>c+]`.
 
 
 
- 
-
- 
-
-
-
-
-
+## References
 
 <a name="link1">[1]</a> The **Bat-framework**: [Code on Github](https://github.com/marcocor/bat-framework), [website](http://acube.di.unipi.it/bat-framework/)
 
