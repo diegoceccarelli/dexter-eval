@@ -50,11 +50,27 @@ The folder `example` contains the `iitb` [3] annotated dataset, and the predicti
 
     ./scripts/evaluate.sh example/wikiminer-iitb-predictions.json.gz example/iitb-dataset.json.gz Me example/conf-macro-measures.txt
 
-In this example, using the metric `Me`, two annotated spots will be considered the same if they have the same `wikiid`.
+In the example, using the metric `Me`, two annotated spots will be considered the same if they have the same `wikiid`.
 
 Please note that since there could be several occurrences of the same entity (in different positions), a prediction and 
 its golden truth are always prefiltered removing multiple occurrences of the same annotation (based on the selected metric.). See the available metrics section for more details.
-Moreover invalid annotations (referring to an unknown entity, `wikiid==0`, or referring to a disambiguation page `wikiid< 0`) are currently filtered out (this is reflected by the code `[-noId][-noDisamb]` in the results). 
+Moreover invalid annotations (referring to an unknown entity, `wikiid==0`, or referring to a disambiguation page `wikiid< 0`) are currently filtered out (this is reflected by the codes `[-noId][-noDisamb]` in the results). 
+
+In the following we will describe the [file formats][File Formats], the available [metrics][Metrics], how to [write a configuration file][Configuration File] 
+
+## File Formats
+
+formats
+
+## Metrics
+
+metrics 
+
+## Configuration File
+
+configuration 
+
+
 
 
 
