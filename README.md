@@ -1,7 +1,7 @@
 Dexter Eval
 ===========
 
-Dexter Eval is an entity linking evaluation framework, inspired by the **bat-framework** [1].
+Dexter Eval is an entity linking evaluation framework, inspired by the [bat-framework[1]](#link1).
  
 The entity linking task aims at identifying 
 all the small text fragments in a document 
@@ -22,7 +22,7 @@ as a tuple `<start, end, wiki-id, score>` where:
  * `wiki-id` the id of the entity associated by the linker;
  * `score` the confidence of the linker on the entity. associated. 
  
-Researchers produced several datasets[2] for evaluating
+Researchers produced [several datasets[2]](#link2) for evaluating
 entity linking methods, but **the main problem is how to evaluate?** Depending on your needs, you could only consider the annotated wiki-ids (with no interest for the positions), or you would like to ignore the entities and check if your entity linker is good in detecting the correct positions
 of the spots and so on. **Dexter-eval** allows you to 
 evaluate your method with the //metrics// you prefer. 
@@ -46,7 +46,7 @@ where:
 * `conf` a file describing which measures (e.g., Precision, Recall ...) compute and how to output the values.
 
 
-The folder `example` contains the `iitb` [3] annotated dataset, and the predictions produced by the [Wikiminer](http://wikipedia-miner.cms.waikato.ac.nz/) entity linker, you can benchmark wikiminer running the command: 
+The folder `example` contains the `iitb` [[3]](#link3) annotated dataset, and the predictions produced by the [Wikiminer](http://wikipedia-miner.cms.waikato.ac.nz/) entity linker, you can benchmark wikiminer running the command: 
 
     ./scripts/evaluate.sh example/wikiminer-iitb-predictions.json.gz example/iitb-dataset.json.gz Me example/conf-macro-measures.txt
 
@@ -74,13 +74,11 @@ configuration
 
 
 
-<a name="#link1"></a>
- 
-[1] [bat-framework github](https://github.com/marcocor/bat-framework), [bat-framework website](http://acube.di.unipi.it/bat-framework/)
- 
-[2] A Framework for Benchmarking Entity-Annotation Systems, Marco Cornolti and Paolo Ferragina and Massimiliano Ciaramita, Proceedings of the International World Wide Web Conference (WWW 2013) [[PDF]](http://static.googleusercontent.com/media/research.google.com/en//pubs/archive/40749.pdf). The paper describes several available datasets. 
+<a name="#link1">[1]</a>[bat-framework github](https://github.com/marcocor/bat-framework), [bat-framework website](http://acube.di.unipi.it/bat-framework/)
 
-[3] [CSAW Dataset](http://www.cse.iitb.ac.in/~soumen/doc/CSAW/Annot/)
+<a name="#link2">[2]</a> A Framework for Benchmarking Entity-Annotation Systems, Marco Cornolti and Paolo Ferragina and Massimiliano Ciaramita, Proceedings of the International World Wide Web Conference (WWW 2013) [[PDF]](http://static.googleusercontent.com/media/research.google.com/en//pubs/archive/40749.pdf). The paper describes several available datasets. 
+
+<a name="#link3">[3]</a> [CSAW Dataset](http://www.cse.iitb.ac.in/~soumen/doc/CSAW/Annot/)
 
  
  
