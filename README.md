@@ -74,11 +74,11 @@ configuration
 
 
 
-<a name="#link1">[1]</a>[bat-framework github](https://github.com/marcocor/bat-framework), [bat-framework website](http://acube.di.unipi.it/bat-framework/)
+<a name="link1">[1]</a>[bat-framework github](https://github.com/marcocor/bat-framework), [bat-framework website](http://acube.di.unipi.it/bat-framework/)
 
-<a name="#link2">[2]</a> A Framework for Benchmarking Entity-Annotation Systems, Marco Cornolti and Paolo Ferragina and Massimiliano Ciaramita, Proceedings of the International World Wide Web Conference (WWW 2013) [[PDF]](http://static.googleusercontent.com/media/research.google.com/en//pubs/archive/40749.pdf). The paper describes several available datasets. 
+<a name="link2">[2]</a> A Framework for Benchmarking Entity-Annotation Systems, Marco Cornolti and Paolo Ferragina and Massimiliano Ciaramita, Proceedings of the International World Wide Web Conference (WWW 2013) [[PDF]](http://static.googleusercontent.com/media/research.google.com/en//pubs/archive/40749.pdf). The paper describes several available datasets. 
 
-<a name="#link3">[3]</a> [CSAW Dataset](http://www.cse.iitb.ac.in/~soumen/doc/CSAW/Annot/)
+<a name="link3">[3]</a> [CSAW Dataset](http://www.cse.iitb.ac.in/~soumen/doc/CSAW/Annot/)
 
  
  
