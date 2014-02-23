@@ -64,8 +64,8 @@ dexter-eval accepts predictions and golden-truth predictions in two different fo
 
 ###The JSON format
 
-A JSON file contains one [annotated record](blob/master/src/main/java/it/cnr/isti/hpc/dexter/eval/AssessmentRecord.java) per line encoded in json. A record represents a document with its annotations. An annotated record is identified by its `docid` and can contain the text of the document (but it is not mandatory). It also contains a list of annotations, where
-an [annotation](https://github.com/diegoceccarelli/dexter-eval/blob/master/src/main/java/it/cnr/isti/hpc/dexter/eval/AnnotatedSpot.java) is characterized by:
+A JSON file contains one [annotated record](src/main/java/it/cnr/isti/hpc/dexter/eval/AssessmentRecord.java) per line encoded in json. A record represents a document with its annotations. An annotated record is identified by its `docid` and can contain the text of the document (but it is not mandatory). It also contains a list of annotations, where
+an [annotation](src/main/java/it/cnr/isti/hpc/dexter/eval/AnnotatedSpot.java) is characterized by:
 
 * `docId` the doc-id of the annotated record (not mandatory);
 * `spot` the piece of text annotated; 
@@ -78,10 +78,10 @@ an [annotation](https://github.com/diegoceccarelli/dexter-eval/blob/master/src/m
 You can find an example of annotated record [here](src/test/resources/prediction-example.json) (use [this 
 service](http://jsonviewer.stack.hu/) to analyze the structure of the JSON).
 
-###The TSV form
+###The TSV format
 
 dexter-eval also supports Tab Separated Values (tsv) Files, a tsv file is composed by several lines,
-and each line represent an [annotated record](blob/master/src/main/java/it/cnr/isti/hpc/dexter/eval/AssessmentRecord.java). The format of the line 
+and each line represent an [annotated record](src/main/java/it/cnr/isti/hpc/dexter/eval/AssessmentRecord.java). The format of the line 
 is: 
 
 	 docid \t spot \t start \t end \t entity (wiki-id) \t wikiname \t confidence score
@@ -97,12 +97,12 @@ where:
 * `confidenceScore` the confidence score associated by the entity linker to the mapping (it is not mandatory and it is not considered in the golden-truth records).
 
 If a field is not mandatory and you don't want to use it put an empty string or 0 in case of numbers,
-You can find an example of annotated record [here](blob/master/src/test/resources/goldentruth-test.tsv);
+You can find an example of annotated record [here](src/test/resources/goldentruth-test.tsv);
 
 ### Other formats
 
 If you need to read the golden-truth and/or your predictions in other formats you can add your 
-reader implementing the [AnnotatedSpotReader](blob/master/src/main/java/it/cnr/isti/hpc/dexter/eval/reader/AnnotatedSpotReader.java)
+reader implementing the [AnnotatedSpotReader](src/main/java/it/cnr/isti/hpc/dexter/eval/reader/AnnotatedSpotReader.java)
 interface. 
 
 ## Metrics
