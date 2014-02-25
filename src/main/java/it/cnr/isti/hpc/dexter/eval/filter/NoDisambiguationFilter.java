@@ -31,6 +31,7 @@ public class NoDisambiguationFilter implements Filter {
 
 	public List<AnnotatedSpot> filter(List<AnnotatedSpot> spots) {
 		List<AnnotatedSpot> filtered = new LinkedList<AnnotatedSpot>();
+
 		for (AnnotatedSpot annotation : spots) {
 			if (annotation.getEntity() > 0)
 				filtered.add(annotation);
