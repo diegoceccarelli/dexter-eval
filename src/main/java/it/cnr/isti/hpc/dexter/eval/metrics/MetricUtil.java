@@ -18,6 +18,7 @@ package it.cnr.isti.hpc.dexter.eval.metrics;
 import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -56,6 +57,11 @@ public class MetricUtil {
 				fn.add(goldSpot);
 			}
 		}
+
+		Collections.sort(fp, new AnnotatedSpot.SortByStart());
+		Collections.sort(fn, new AnnotatedSpot.SortByStart());
+		Collections.sort(tpPredictions, new AnnotatedSpot.SortByStart());
+		Collections.sort(tpGoldenTruth, new AnnotatedSpot.SortByStart());
 
 		return;
 

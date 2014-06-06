@@ -133,6 +133,14 @@ public class AnnotatedSpot {
 
 	}
 
+	public static class SortByStart implements Comparator<AnnotatedSpot> {
+
+		public int compare(AnnotatedSpot o1, AnnotatedSpot o2) {
+			return o1.getStart() - o2.getStart();
+		}
+
+	}
+
 	/**
 	 * Sorts from in decreasing confidence score order of the spots
 	 * 

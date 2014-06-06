@@ -59,7 +59,7 @@ public class ConsoleResultsAppender implements OutputResultsAppender {
 	public void appendPartial(List<AnnotatedSpot> predictions,
 			List<AnnotatedSpot> goldenTruth,
 			AnnotatedSpotComparator comparator,
-			MetricValuesCollector<?> collector) {
+			List<MetricValuesCollector<?>> collectors) {
 		if (goldenTruth.isEmpty()) {
 			logger.warn("empty golden truth!");
 		} else {
@@ -94,19 +94,20 @@ public class ConsoleResultsAppender implements OutputResultsAppender {
 			System.out.println(value);
 
 		}
-
-		Object o = collector.getPartial();
-		value = "NONE";
-		if (o instanceof Integer) {
-			value = String.format("%-40s%d", collector.getName(),
-					collector.getPartial());
+		for (MetricValuesCollector<?> collector : collectors) {
+			Object o = collector.getPartial();
+			value = "NONE";
+			if (o instanceof Integer) {
+				value = String.format("%-40s%d", collector.getName(),
+						collector.getPartial());
+			}
+			if (o instanceof Double) {
+				value = String.format("%-40s%.3f", collector.getName(),
+						collector.getPartial());
+			}
+			System.out.println(value);
+			System.out.println();
 		}
-		if (o instanceof Double) {
-			value = String.format("%-40s%.3f", collector.getName(),
-					collector.getPartial());
-		}
-		System.out.println(value);
-		System.out.println();
 
 	}
 

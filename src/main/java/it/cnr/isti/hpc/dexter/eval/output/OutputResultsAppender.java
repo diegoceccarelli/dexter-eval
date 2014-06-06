@@ -44,7 +44,8 @@ public interface OutputResultsAppender {
 	 */
 	public void appendPartial(List<AnnotatedSpot> prediction,
 			List<AnnotatedSpot> goldenTruth,
-			AnnotatedSpotComparator comparator, MetricValuesCollector<?> metric);
+			AnnotatedSpotComparator comparator,
+			List<MetricValuesCollector<?>> metrics);
 
 	/**
 	 * Receive a final result
