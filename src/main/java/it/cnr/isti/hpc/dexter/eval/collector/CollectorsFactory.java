@@ -25,6 +25,7 @@ import it.cnr.isti.hpc.dexter.eval.metrics.PrecisionMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.RecallMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.TruePositiveMetric;
 import it.cnr.isti.hpc.dexter.eval.output.ConsoleResultsAppender;
+import it.cnr.isti.hpc.dexter.eval.output.HTMLResultsAppender;
 import it.cnr.isti.hpc.dexter.eval.output.OutputResultsAppender;
 import it.cnr.isti.hpc.io.IOUtils;
 
@@ -94,6 +95,10 @@ public class CollectorsFactory {
 		if (f.charAt(0) == '>') {
 			if (f.charAt(1) == 'c') {
 				out = new ConsoleResultsAppender();
+			}
+
+			if (f.charAt(1) == 'h') {
+				out = new HTMLResultsAppender("eval.html");
 			}
 		}
 		if (out != null) {

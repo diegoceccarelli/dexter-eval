@@ -114,4 +114,9 @@ public class ConsoleResultsAppender implements OutputResultsAppender {
 		partial = isPartial;
 
 	}
+
+	public void end() {
+		// TODO Auto-generated method stub
+
+	}
 }

@@ -56,4 +56,9 @@ public interface OutputResultsAppender {
 	 */
 	public void setPartial(boolean isPartial);
 
+	/**
+	 * evaluation is finished
+	 */
+	public void end();
+
 }

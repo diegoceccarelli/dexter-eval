@@ -7,7 +7,7 @@
 	<name>Dexter Evaluation Framework</name>
 	<description>Dexter Evaluation Framework</description>
 	<properties>
-	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
 
@@ -22,8 +22,11 @@
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
 		</dependency>
-
-
+		<dependency>
+			<groupId>com.googlecode.jatl</groupId>
+			<artifactId>jatl</artifactId>
+			<version>0.2.2</version>
+		</dependency>
 
 
 	</dependencies>
@@ -36,7 +39,7 @@
 				<configuration>
 					<source>1.5</source>
 					<target>1.5</target>
-					
+
 				</configuration>
 			</plugin>
 			<plugin>
@@ -50,16 +53,16 @@
 					</descriptorRefs>
 				</configuration>
 			</plugin>
-			
-		   
+
+
 
 
 		</plugins>
 	</build>
-    <repositories>        
-                   <repository>            
-                           <id>dropbox</id>                        
-                           <url>https://dl.dropboxusercontent.com/u/4663256/mvn-repository/</url>        
-                   </repository>           
-     </repositories> 
+	<repositories>
+		<repository>
+			<id>dropbox</id>
+			<url>https://dl.dropboxusercontent.com/u/4663256/mvn-repository/</url>
+		</repository>
+	</repositories>
 </project>

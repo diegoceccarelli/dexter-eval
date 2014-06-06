@@ -71,6 +71,7 @@ public abstract class AbstractMetricValueCollector<T> implements
 		for (OutputResultsAppender appender : appenders) {
 
 			appender.append(this);
+			appender.end();
 
 		}
 	}
