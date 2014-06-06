@@ -18,7 +18,6 @@ package it.cnr.isti.hpc.dexter.eval.collector;
 import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import it.cnr.isti.hpc.dexter.eval.metrics.Metric;
-import it.cnr.isti.hpc.dexter.eval.output.ConsoleResultsAppender;
 
 import java.util.List;
 
@@ -37,7 +36,6 @@ public class DoubleValuesCollector extends AbstractMetricValueCollector<Double>
 	public DoubleValuesCollector(Metric<Double> metric) {
 		this.name = metric.getName();
 		this.metric = metric;
-		addOutputCollector(new ConsoleResultsAppender());
 		total = 0.0;
 	}
 

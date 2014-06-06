@@ -18,10 +18,8 @@ package it.cnr.isti.hpc.dexter.eval.collector;
 import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import it.cnr.isti.hpc.dexter.eval.filter.Filter;
-import it.cnr.isti.hpc.dexter.eval.output.OutputResultsAppender;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -36,15 +34,17 @@ public abstract class AbstractMetricValueCollector<T> implements
 	protected String name = this.getClass().toString();
 	protected boolean serveAverageScore = true;
 	private final List<Filter> filters = new ArrayList<Filter>();
-	private final List<OutputResultsAppender> appenders = new LinkedList<OutputResultsAppender>();
+
+	// private final List<OutputResultsAppender> appenders = new
+	// LinkedList<OutputResultsAppender>();
 
 	public int size() {
 		return size;
 	}
 
-	public void resetOutputCollectors() {
-		appenders.clear();
-	}
+	// public void resetOutputCollectors() {
+	// appenders.clear();
+	// }
 
 	protected abstract void eval(List<AnnotatedSpot> predictions,
 			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator);
@@ -58,23 +58,23 @@ public abstract class AbstractMetricValueCollector<T> implements
 		}
 		eval(predictions, goldenTruth, comparator);
 		size++;
-		for (OutputResultsAppender appender : appenders) {
-			if (appender.isAppendPartial()) {
-				appender.appendPartial(predictions, goldenTruth, comparator,
-						this);
-			}
-		}
+		// for (OutputResultsAppender appender : appenders) {
+		// if (appender.isAppendPartial()) {
+		// appender.appendPartial(predictions, goldenTruth, comparator,
+		// this);
+		// }
+		// }
 
 	}
 
-	public void finalCollect() {
-		for (OutputResultsAppender appender : appenders) {
-
-			appender.append(this);
-			appender.end();
-
-		}
-	}
+	// public void finalCollect() {
+	// for (OutputResultsAppender appender : appenders) {
+	//
+	// appender.append(this);
+	// appender.end();
+	//
+	// }
+	// }
 
 	public void setAverageScore(boolean averageScore) {
 		this.serveAverageScore = true;
@@ -90,11 +90,11 @@ public abstract class AbstractMetricValueCollector<T> implements
 		return this;
 	}
 
-	public MetricValuesCollector<T> addOutputCollector(
-			OutputResultsAppender resultsAppender) {
-		appenders.add(resultsAppender);
-		return this;
-	}
+	// public MetricValuesCollector<T> addOutputCollector(
+	// OutputResultsAppender resultsAppender) {
+	// appenders.add(resultsAppender);
+	// return this;
+	// }
 
 	public abstract T getCollectedTotal();
 

@@ -18,7 +18,6 @@ package it.cnr.isti.hpc.dexter.eval.collector;
 import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import it.cnr.isti.hpc.dexter.eval.filter.Filter;
-import it.cnr.isti.hpc.dexter.eval.output.OutputResultsAppender;
 
 import java.util.List;
 
@@ -61,10 +60,10 @@ public interface MetricValuesCollector<T> {
 	public void collect(List<AnnotatedSpot> predictions,
 			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator);
 
-	/**
-	 * Sends the final score to the output collectors
-	 */
-	public void finalCollect();
+	// /**
+	// * Sends the final score to the output collectors
+	// */
+	// public void finalCollect();
 
 	/**
 	 * returns the total score of the collects
@@ -76,16 +75,16 @@ public interface MetricValuesCollector<T> {
 	 */
 	public T getPartial();
 
-	/**
-	 * adds an output collector
-	 */
-	public MetricValuesCollector<T> addOutputCollector(
-			OutputResultsAppender resultsAppender);
+	// /**
+	// * adds an output collector
+	// */
+	// public MetricValuesCollector<T> addOutputCollector(
+	// OutputResultsAppender resultsAppender);
 
-	/**
-	 * deletes all the output collectors.
-	 */
-	public void resetOutputCollectors();
+	// /**
+	// * deletes all the output collectors.
+	// */
+	// public void resetOutputCollectors();
 
 	/**
 	 * returns the score collected by the collector

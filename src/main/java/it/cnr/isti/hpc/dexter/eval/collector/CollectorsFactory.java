@@ -24,9 +24,6 @@ import it.cnr.isti.hpc.dexter.eval.metrics.FalsePositiveMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.PrecisionMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.RecallMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.TruePositiveMetric;
-import it.cnr.isti.hpc.dexter.eval.output.ConsoleResultsAppender;
-import it.cnr.isti.hpc.dexter.eval.output.HTMLResultsAppender;
-import it.cnr.isti.hpc.dexter.eval.output.OutputResultsAppender;
 import it.cnr.isti.hpc.io.IOUtils;
 
 import java.io.BufferedReader;
@@ -61,7 +58,8 @@ public class CollectorsFactory {
 		MetricValuesCollector<?> collector = getCollector(pieces[0]);
 		if (collector == null)
 			return null;
-		List<OutputResultsAppender> outputs = new ArrayList<OutputResultsAppender>();
+		// List<OutputResultsAppender> outputs = new
+		// ArrayList<OutputResultsAppender>();
 		for (int i = 1; i < pieces.length; i++) {
 			String f = pieces[i];
 			f = f.substring(0, f.length() - 1);
@@ -71,44 +69,45 @@ public class CollectorsFactory {
 				collector.addFilter(filter);
 				continue;
 			}
-			OutputResultsAppender a = getOutputResultsAppend(f);
-			if (a != null) {
-				outputs.add(a);
-			} else {
-				logger.warn("error processing param {}, ignoring", f);
-
-			}
-
 		}
-		if (!outputs.isEmpty()) {
-			collector.resetOutputCollectors();
-			for (OutputResultsAppender ora : outputs) {
-				collector.addOutputCollector(ora);
-			}
-		}
+		// OutputResultsAppender a = getOutputResultsAppend(f);
+		// if (a != null) {
+		// outputs.add(a);
+		// } else {
+		// logger.warn("error processing param {}, ignoring", f);
+		//
+		// }
+		//
+		// }
+		// // if (!outputs.isEmpty()) {
+		// // collector.resetOutputCollectors();
+		// // for (OutputResultsAppender ora : outputs) {
+		// // collector.addOutputCollector(ora);
+		// // }
+		// // }
 
 		return collector;
 	}
 
-	private OutputResultsAppender getOutputResultsAppend(String f) {
-		OutputResultsAppender out = null;
-		if (f.charAt(0) == '>') {
-			if (f.charAt(1) == 'c') {
-				out = new ConsoleResultsAppender();
-			}
-
-			if (f.charAt(1) == 'h') {
-				out = new HTMLResultsAppender("eval.html");
-			}
-		}
-		if (out != null) {
-			if (f.charAt(f.length() - 1) == '+') {
-				out.setPartial(true);
-			}
-		}
-
-		return out;
-	}
+	// private OutputResultsAppender getOutputResultsAppend(String f) {
+	// OutputResultsAppender out = null;
+	// if (f.charAt(0) == '>') {
+	// if (f.charAt(1) == 'c') {
+	// out = new ConsoleResultsAppender();
+	// }
+	//
+	// if (f.charAt(1) == 'h') {
+	// out = new HTMLResultsAppender("eval.html");
+	// }
+	// }
+	// if (out != null) {
+	// if (f.charAt(f.length() - 1) == '+') {
+	// out.setPartial(true);
+	// }
+	// }
+	//
+	// return out;
+	// }
 
 	public List<MetricValuesCollector<?>> newCollectors(File f)
 			throws IOException {

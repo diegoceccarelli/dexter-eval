@@ -19,7 +19,6 @@ import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import it.cnr.isti.hpc.dexter.eval.metrics.FalsePositiveMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.TruePositiveMetric;
-import it.cnr.isti.hpc.dexter.eval.output.ConsoleResultsAppender;
 
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class MicroPrecisionValuesCollector extends
 				new TruePositiveMetric());
 		falsePositivesCollector = new IntValuesCollector(
 				new FalsePositiveMetric());
-		addOutputCollector(new ConsoleResultsAppender());
+		// addOutputCollector(new ConsoleResultsAppender());
 	}
 
 	@Override

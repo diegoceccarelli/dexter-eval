@@ -19,7 +19,6 @@ import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import it.cnr.isti.hpc.dexter.eval.metrics.FalseNegativeMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.TruePositiveMetric;
-import it.cnr.isti.hpc.dexter.eval.output.ConsoleResultsAppender;
 
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class MicroRecallValuesCollector extends
 				new TruePositiveMetric());
 		falseNegativeCollector = new IntValuesCollector(
 				new FalseNegativeMetric());
-		addOutputCollector(new ConsoleResultsAppender());
+		// addOutputCollector(new ConsoleResultsAppender());
 	}
 
 	@Override

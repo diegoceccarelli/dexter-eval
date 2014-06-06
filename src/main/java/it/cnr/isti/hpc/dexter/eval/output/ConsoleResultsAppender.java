@@ -21,6 +21,7 @@ import it.cnr.isti.hpc.dexter.eval.collector.MetricValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.metrics.MetricUtil;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -37,6 +38,7 @@ public class ConsoleResultsAppender implements OutputResultsAppender {
 
 	boolean partial = false;
 	MetricUtil utils = new MetricUtil();
+	List<MetricValuesCollector<?>> collectors = new LinkedList<MetricValuesCollector<?>>();
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(ConsoleResultsAppender.class);
@@ -57,9 +59,7 @@ public class ConsoleResultsAppender implements OutputResultsAppender {
 	}
 
 	public void appendPartial(List<AnnotatedSpot> predictions,
-			List<AnnotatedSpot> goldenTruth,
-			AnnotatedSpotComparator comparator,
-			List<MetricValuesCollector<?>> collectors) {
+			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator) {
 		if (goldenTruth.isEmpty()) {
 			logger.warn("empty golden truth!");
 		} else {
@@ -106,8 +106,8 @@ public class ConsoleResultsAppender implements OutputResultsAppender {
 						collector.getPartial());
 			}
 			System.out.println(value);
-			System.out.println();
 		}
+		System.out.println();
 
 	}
 
@@ -117,7 +117,24 @@ public class ConsoleResultsAppender implements OutputResultsAppender {
 	}
 
 	public void end() {
-		// TODO Auto-generated method stub
+		for (MetricValuesCollector<?> collector : collectors) {
+			Object o = collector.getPartial();
+			String value = "NONE";
+			if (o instanceof Integer) {
+				value = String.format("%-40s%d", collector.getName(),
+						collector.getScore());
+			}
+			if (o instanceof Double) {
+				value = String.format("%-40s%.3f", collector.getName(),
+						collector.getScore());
+			}
+			System.out.println(value);
+		}
+		System.out.println();
+	}
+
+	public void register(MetricValuesCollector collector) {
+		collectors.add(collector);
 
 	}
 }

@@ -24,6 +24,7 @@ import it.cnr.isti.hpc.io.IOUtils;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -44,6 +45,8 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 	MetricUtil utils = new MetricUtil();
 	Html html = null;
 	BufferedWriter bw = null;
+
+	List<MetricValuesCollector<?>> collectors = new LinkedList<MetricValuesCollector<?>>();
 
 	public HTMLResultsAppender(String htmlFile) {
 		bw = IOUtils.getPlainOrCompressedUTF8Writer(htmlFile);
@@ -99,9 +102,7 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 	}
 
 	public void appendPartial(List<AnnotatedSpot> predictions,
-			List<AnnotatedSpot> goldenTruth,
-			AnnotatedSpotComparator comparator,
-			List<MetricValuesCollector<?>> collectors) {
+			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator) {
 		if (goldenTruth.isEmpty()) {
 			logger.warn("empty golden truth!");
 		} else {
@@ -277,6 +278,7 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 	}
 
 	public void end() {
+
 		html.endAll();
 		try {
 			bw.close();
@@ -284,6 +286,11 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+	}
+
+	public void register(MetricValuesCollector collector) {
+		collectors.add(collector);
 
 	}
 }

@@ -43,9 +43,7 @@ public interface OutputResultsAppender {
 	 * Receive a partial result
 	 */
 	public void appendPartial(List<AnnotatedSpot> prediction,
-			List<AnnotatedSpot> goldenTruth,
-			AnnotatedSpotComparator comparator,
-			List<MetricValuesCollector<?>> metrics);
+			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator);
 
 	/**
 	 * Receive a final result
@@ -61,5 +59,7 @@ public interface OutputResultsAppender {
 	 * evaluation is finished
 	 */
 	public void end();
+
+	public void register(MetricValuesCollector collector);
 
 }

@@ -20,6 +20,9 @@ import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.eval.Evaluator;
 import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import it.cnr.isti.hpc.dexter.eval.cmp.ComparatorFactory;
+import it.cnr.isti.hpc.dexter.eval.output.ConsoleResultsAppender;
+import it.cnr.isti.hpc.dexter.eval.output.HTMLResultsAppender;
+import it.cnr.isti.hpc.dexter.eval.output.OutputResultsAppender;
 import it.cnr.isti.hpc.dexter.eval.reader.AnnotatedSpotReader;
 import it.cnr.isti.hpc.dexter.eval.reader.JsonAnnotatedSpotReader;
 import it.cnr.isti.hpc.dexter.eval.reader.TsvAnnotatedSpotReader;
@@ -37,7 +40,8 @@ public class EvaluatorCLI extends AbstractCommandLineInterface {
 	private static final Logger logger = LoggerFactory
 			.getLogger(EvaluatorCLI.class);
 	private static String usage = "java -jar $jar  it.cnr.isti.hpc.dexter.eval.cli.EvaluatorCLI -input predictions.tsv[.gz] -gt goldentruth.tsv[.gz] -cmp comparatorname";
-	private static String[] params = new String[] { INPUT, "gt", "cmp" };
+	private static String[] params = new String[] { INPUT, "gt", "cmp",
+			"output" };
 
 	public EvaluatorCLI(String[] args) {
 		super(args, params, usage);
@@ -78,6 +82,15 @@ public class EvaluatorCLI extends AbstractCommandLineInterface {
 
 		Evaluator evaluator = new Evaluator(predictionsReader,
 				goldenTruthReader, asc);
+		OutputResultsAppender appender;
+		String output = cli.getOutput();
+		if (output.endsWith(".html")) {
+			appender = new HTMLResultsAppender(output);
+			evaluator.addAppender(appender);
+		}
+		appender = new ConsoleResultsAppender();
+		evaluator.addAppender(appender);
+
 		evaluator.run();
 	}
 }

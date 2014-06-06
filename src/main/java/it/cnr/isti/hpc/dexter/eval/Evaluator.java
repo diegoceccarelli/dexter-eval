@@ -28,6 +28,7 @@ import it.cnr.isti.hpc.dexter.eval.filter.SameAnnotatedSpotFilter;
 import it.cnr.isti.hpc.dexter.eval.metrics.FMeasureMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.PrecisionMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.RecallMetric;
+import it.cnr.isti.hpc.dexter.eval.output.OutputResultsAppender;
 import it.cnr.isti.hpc.dexter.eval.reader.AnnotatedSpotReader;
 
 import java.io.File;
@@ -62,6 +63,12 @@ public class Evaluator {
 	private boolean debug = false;
 
 	private final List<Filter> prefilters = new ArrayList<Filter>();
+
+	private final List<OutputResultsAppender> outputAppenders = new LinkedList<OutputResultsAppender>();
+
+	public void addAppender(OutputResultsAppender appender) {
+		outputAppenders.add(appender);
+	}
 
 	public Evaluator(AnnotatedSpotReader predictionsReader,
 			AnnotatedSpotReader goldenTruthReader,
@@ -119,7 +126,13 @@ public class Evaluator {
 	}
 
 	public void run() {
+
 		List<AnnotatedSpot> predictions = predictionsReader.next();
+		for (OutputResultsAppender appender : outputAppenders) {
+			for (MetricValuesCollector<?> collector : collectors) {
+				appender.register(collector);
+			}
+		}
 		while (this.goldenTruthReader.hasNext()) {
 			List<AnnotatedSpot> goldenTruth = goldenTruthReader.next();
 			logger.info("processing document {} ",
@@ -200,12 +213,17 @@ public class Evaluator {
 		for (MetricValuesCollector<?> collector : collectors) {
 			collector.collect(predictions, goldenTruth, comparator);
 		}
+		for (OutputResultsAppender appender : outputAppenders) {
+			if (appender.isAppendPartial()) {
+				appender.appendPartial(predictions, goldenTruth, comparator);
+			}
+		}
 
 	}
 
 	public void summary() {
-		for (MetricValuesCollector<?> collector : collectors) {
-			collector.finalCollect();
+		for (OutputResultsAppender appender : outputAppenders) {
+			appender.end();
 		}
 	}
 
