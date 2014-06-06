@@ -27,7 +27,7 @@ public class AnnotatedSpot {
 	String spot;
 	int start;
 	int end;
-	int entity;
+	String entity;
 	String wikiname;
 	float confidenceScore;
 
@@ -35,7 +35,7 @@ public class AnnotatedSpot {
 
 	}
 
-	public AnnotatedSpot(String spot, int entity) {
+	public AnnotatedSpot(String spot, String entity) {
 		super();
 		this.spot = spot;
 		this.entity = entity;
@@ -83,11 +83,11 @@ public class AnnotatedSpot {
 		return getEnd() - getStart();
 	}
 
-	public int getEntity() {
+	public String getEntity() {
 		return entity;
 	}
 
-	public void setEntity(int entity) {
+	public void setEntity(String entity) {
 		this.entity = entity;
 	}
 

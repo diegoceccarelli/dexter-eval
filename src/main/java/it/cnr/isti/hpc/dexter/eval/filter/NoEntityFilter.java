@@ -20,6 +20,9 @@ import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Returns the top-k annotation with highest confidence score.
  * 
@@ -29,11 +32,22 @@ import java.util.List;
  */
 public class NoEntityFilter implements Filter {
 
+	private static final Logger logger = LoggerFactory
+			.getLogger(NoEntityFilter.class);
+
 	public List<AnnotatedSpot> filter(List<AnnotatedSpot> spots) {
 		List<AnnotatedSpot> filtered = new LinkedList<AnnotatedSpot>();
 		for (AnnotatedSpot annotation : spots) {
-			if (annotation.getEntity() != 0)
+			try {
+				String id = annotation.getEntity();
+				int wikiid = Integer.parseInt(id);
+				if (wikiid != 0) {
+					filtered.add(annotation);
+				}
+			} catch (Exception e) {
+				logger.warn("you are not using wikiid, cannot remove entities without id");
 				filtered.add(annotation);
+			}
 		}
 		return filtered;
 	}

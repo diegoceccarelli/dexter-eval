@@ -35,7 +35,7 @@ import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 public class WeakAnnotationMatchComparator implements AnnotatedSpotComparator {
 
 	public boolean match(AnnotatedSpot x, AnnotatedSpot y) {
-		if (x.getEntity() != y.getEntity())
+		if (x.getEntity().equals(y.getEntity()))
 			return false;
 
 		if ((x.getStart() >= y.getStart()) && (x.getStart() <= y.getEnd())) {

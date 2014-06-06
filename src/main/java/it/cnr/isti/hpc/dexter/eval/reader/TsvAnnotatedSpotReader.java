@@ -70,7 +70,7 @@ public class TsvAnnotatedSpotReader implements AnnotatedSpotReader {
 		while ((next != null) && (next.get("docid").equals(currentDocId))) {
 			AnnotatedSpot spot = new AnnotatedSpot();
 			spot.setSpot(next.get("spot"));
-			spot.setEntity(next.getInt("entity"));
+			spot.setEntity(next.get("entity"));
 			spot.setWikiname(next.get("wikiname"));
 			spot.setStart(next.getInt("start"));
 			spot.setEnd(next.getInt("end"));

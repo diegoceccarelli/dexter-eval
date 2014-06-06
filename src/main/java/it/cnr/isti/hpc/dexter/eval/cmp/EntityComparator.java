@@ -28,7 +28,7 @@ import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 public class EntityComparator implements AnnotatedSpotComparator {
 
 	public boolean match(AnnotatedSpot x, AnnotatedSpot y) {
-		return x.getEntity() == y.getEntity();
+		return x.getEntity().equals(y.getEntity());
 	}
 
 	public String getName() {
