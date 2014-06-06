@@ -45,7 +45,7 @@ public class NoEntityFilter implements Filter {
 					filtered.add(annotation);
 				}
 			} catch (Exception e) {
-				logger.warn("you are not using wikiid, cannot remove entities without id");
+				logger.error("you are not using wikiid, cannot remove entities without id");
 				filtered.add(annotation);
 			}
 		}

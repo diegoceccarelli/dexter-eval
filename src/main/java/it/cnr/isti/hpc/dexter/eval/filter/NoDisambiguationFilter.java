@@ -46,7 +46,7 @@ public class NoDisambiguationFilter implements Filter {
 					filtered.add(annotation);
 				}
 			} catch (Exception e) {
-				logger.warn("you are not using wikiid, cannot remove disambiguations");
+				logger.error("you are not using wikiid, cannot remove disambiguations");
 				filtered.add(annotation);
 			}
 		}
