@@ -21,44 +21,19 @@ import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import java.util.List;
 
 /**
- * 
- * Counts the F-measure, as <br/>
- * <br/>
- * <code>
- *  2 * (precision * recall) / (precision + recall);
- * </code> <br/>
- * <br/>
- * See {@link PrecisionMetric } and {@link RecallMetric} for more informations.
- * 
- * 
- * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
- *         Created on Feb 16, 2014
+ *         Created on Jun 6, 2014
  */
-public class FMeasureMetric implements Metric<Double> {
+public class GoldenTruthSizeMetric implements Metric<Integer> {
 
-	private final PrecisionMetric precisionMetric;
-	private final RecallMetric recallMetric;
-
-	public FMeasureMetric() {
-		precisionMetric = new PrecisionMetric();
-		recallMetric = new RecallMetric();
-	}
-
-	public Double eval(List<AnnotatedSpot> predictions,
+	public Integer eval(List<AnnotatedSpot> predictions,
 			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator) {
-		double precision = precisionMetric.eval(predictions, goldenTruth,
-				comparator);
-		double recall = recallMetric.eval(predictions, goldenTruth, comparator);
-		if (precision + recall == 0) {
-			return 0.0;
-		}
-		return 2 * (precision * recall) / (precision + recall);
+		return goldenTruth.size();
 	}
 
 	public String getName() {
-		return "F1";
+		return "Golden Truth";
 	}
 
 }

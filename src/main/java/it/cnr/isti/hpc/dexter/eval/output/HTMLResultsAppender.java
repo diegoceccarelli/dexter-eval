@@ -41,7 +41,7 @@ import com.googlecode.jatl.Html;
  */
 public class HTMLResultsAppender implements OutputResultsAppender {
 
-	boolean partial = false;
+	boolean partial = true;
 	MetricUtil utils = new MetricUtil();
 	Html html = null;
 	BufferedWriter bw = null;
@@ -70,11 +70,25 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 
 		html.script()
 				.type("text/javascript")
-				.text("$(function() {\n" + "$('.tp').tablesorter({ \n"
-						+ "theme : 'blue'\n" + "});\n"
-						+ "$('.fn').tablesorter({ \n" + "theme : 'blue'\n"
-						+ "});\n" + "$('.fp').tablesorter({ \n"
-						+ "theme : 'blue'\n" + "});\n" + "" + "});").end();
+				.text("$(function () {$('.detail').hide();}); \n\n"
+						+ "$(function() {\n"
+						+ "$('.tp').tablesorter({ \n"
+						+ "theme : 'blue'\n"
+						+ "});\n"
+						+ "$('.fn').tablesorter({ \n"
+						+ "theme : 'blue'\n"
+						+ "});\n"
+						+ "$('.fp').tablesorter({ \n"
+						+ "theme : 'blue'\n"
+						+ "});\n"
+						+ "$('.main').tablesorter({ \n"
+						+ "theme : 'blue'\n"
+						+ "});"
+						+ "});\n"
+						+ "\n"
+						+ "\n"
+						+ "function moar(text){  $('#'+text+'-detail').show(1000);}\n\nfunction less(text){ $('#'+text+'-detail').hide(1000);}")
+				.end();
 
 		html.end();
 		html.body();
@@ -85,11 +99,6 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(HTMLResultsAppender.class);
-
-	public HTMLResultsAppender appendPartial() {
-		partial = true;
-		return this;
-	}
 
 	public void append(MetricValuesCollector<?> metric) {
 		double score = metric.getScore();
@@ -107,19 +116,46 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 			logger.warn("empty golden truth!");
 		} else {
 			html.div().classAttr("row").id(goldenTruth.get(0).getDocId()).h3()
-					.text(goldenTruth.get(0).getDocId()).end();
-			html.table();
+					.text(goldenTruth.get(0).getDocId());
+			html.a().onclick("moar('" + goldenTruth.get(0).getDocId() + "')")
+					.text("[more]").end().a()
+					.onclick("less('" + goldenTruth.get(0).getDocId() + "')")
+					.text("[less]").end().end();
+			html.div().classAttr("tp col-md-offset-2 span10 main");
+			html.table().classAttr("main");
+			html.thead();
+			html.tr();
 			for (MetricValuesCollector<?> collector : collectors) {
-				html.hr();
-				html.th().text(collector.getName()).end();
-				html.end();
-			}
 
-			for (MetricValuesCollector<?> collector : collectors) {
-				html.tr();
-				html.td().text("" + collector.getPartial()).end();
-				html.end();
+				html.th().text(collector.getName()).end();
+
 			}
+			html.end();
+			html.end();
+			html.tbody();
+			html.tr();
+			for (MetricValuesCollector<?> collector : collectors) {
+				html.td();
+				Object o = collector.getPartial();
+				double f = 0;
+				if (o instanceof Integer) {
+					int i = ((Integer) o).intValue();
+					html.text(String.format("%d", i)).end();
+					continue;
+				}
+
+				if (o instanceof Float) {
+					f = (Float) (o);
+				}
+				if (o instanceof Double) {
+					f = (Double) o;
+				}
+				html.text(String.format("%.3f", f)).end();
+
+			}
+			html.end();
+			html.end();
+			html.end();
 			html.end();
 		}
 
@@ -130,7 +166,9 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 
 		utils.intersect(predictions, goldenTruth, tpPredictions, tpGoldenTruth,
 				fp, fn, comparator);
-		html.div().classAttr("tp col-md-offset-2 span10 eval");
+		html.div().id(goldenTruth.get(0).getDocId() + "-detail")
+				.classAttr("detail");
+		html.div().classAttr("tp col-md-offset-2 span10 eval ");
 		html.h3().text("True Positives").end();
 		html.table().classAttr("tp table table-striped");
 		html.thead();
@@ -160,8 +198,8 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 			html.td().text(String.valueOf(i + 1)).end();
 			AnnotatedSpot s = tpGoldenTruth.get(i);
 			AnnotatedSpot t = tpPredictions.get(i);
-			html.td().text(s.getSpot()).end();
-			html.td().text(t.getSpot()).end();
+			html.td().text(cleanMention(s.getSpot())).end();
+			html.td().text(cleanMention(t.getSpot())).end();
 
 			html.td().text("" + s.getStart()).end();
 			html.td().text("" + t.getStart()).end();
@@ -175,15 +213,15 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 			html.td().text(s.getWikiname()).end();
 
 			html.td().text(t.getWikiname()).end();
-			html.td().text("" + t.getConfidenceScore()).end();
+			html.td().text(String.format("%.3f", t.getConfidenceScore())).end();
 
 			html.end();
 		}
 		html.end();
 		html.end();
 		html.end();
-
 		html.div().classAttr("fn col-md-offset-2 span10 eval");
+
 		html.h3().text("False Negatives").end();
 		html.table().classAttr("fn table table-striped");
 		html.thead();
@@ -207,7 +245,7 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 			html.td().text(String.valueOf(i + 1)).end();
 
 			AnnotatedSpot t = fn.get(i);
-			html.td().text(t.getSpot()).end();
+			html.td().text(cleanMention(t.getSpot())).end();
 
 			html.td().text("" + t.getStart()).end();
 
@@ -216,7 +254,7 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 			html.td().text(t.getEntity()).end();
 
 			html.td().text(t.getWikiname()).end();
-			html.td().text("" + t.getConfidenceScore()).end();
+			html.td().text(String.format("%.3f", t.getConfidenceScore())).end();
 
 			html.end();
 
@@ -250,7 +288,7 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 			html.td().text(String.valueOf(i + 1)).end();
 
 			AnnotatedSpot t = fp.get(i);
-			html.td().text(t.getSpot()).end();
+			html.td().text(cleanMention(t.getSpot())).end();
 
 			html.td().text("" + t.getStart()).end();
 
@@ -259,7 +297,7 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 			html.td().text(t.getEntity()).end();
 
 			html.td().text(t.getWikiname()).end();
-			html.td().text("" + t.getConfidenceScore()).end();
+			html.td().text(String.format("%.3f", t.getConfidenceScore())).end();
 
 			html.end();
 
@@ -267,7 +305,7 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 		html.end();
 		html.end();
 		html.end();
-
+		html.end();
 		html.end();
 
 	}
@@ -275,6 +313,15 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 	public void setPartial(boolean isPartial) {
 		partial = isPartial;
 
+	}
+
+	private String cleanMention(String m) {
+		if (m == null || m.isEmpty())
+			return m;
+		m = m.replaceAll("%20", " ");
+		m = m.replaceAll("%26", "&");
+
+		return m;
 	}
 
 	public void end() {

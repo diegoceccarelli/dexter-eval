@@ -18,9 +18,11 @@ package it.cnr.isti.hpc.dexter.eval.collector;
 import it.cnr.isti.hpc.dexter.eval.filter.Filter;
 import it.cnr.isti.hpc.dexter.eval.filter.ThresholdFilter;
 import it.cnr.isti.hpc.dexter.eval.filter.TopKFilter;
+import it.cnr.isti.hpc.dexter.eval.metrics.AnnotationsSizeMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.FMeasureMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.FalseNegativeMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.FalsePositiveMetric;
+import it.cnr.isti.hpc.dexter.eval.metrics.GoldenTruthSizeMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.PrecisionMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.RecallMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.TruePositiveMetric;
@@ -157,6 +159,12 @@ public class CollectorsFactory {
 		}
 		if (name.equals("microF1")) {
 			return new MicroFMeasureValuesCollector();
+		}
+		if (name.equals("gt")) {
+			return new IntValuesCollector(new GoldenTruthSizeMetric());
+		}
+		if (name.equals("ann")) {
+			return new IntValuesCollector(new AnnotationsSizeMetric());
 		}
 		if (name.equals("tp")) {
 			return new IntValuesCollector(new TruePositiveMetric());

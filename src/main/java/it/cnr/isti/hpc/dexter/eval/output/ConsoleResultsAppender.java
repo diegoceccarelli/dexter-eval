@@ -118,16 +118,9 @@ public class ConsoleResultsAppender implements OutputResultsAppender {
 
 	public void end() {
 		for (MetricValuesCollector<?> collector : collectors) {
-			Object o = collector.getPartial();
-			String value = "NONE";
-			if (o instanceof Integer) {
-				value = String.format("%-40s%d", collector.getName(),
-						collector.getScore());
-			}
-			if (o instanceof Double) {
-				value = String.format("%-40s%.3f", collector.getName(),
-						collector.getScore());
-			}
+			String value = String.format("%-40s%.3f", collector.getName(),
+					collector.getScore());
+
 			System.out.println(value);
 		}
 		System.out.println();

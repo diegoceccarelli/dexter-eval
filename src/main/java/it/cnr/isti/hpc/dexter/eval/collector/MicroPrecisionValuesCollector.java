@@ -65,14 +65,12 @@ public class MicroPrecisionValuesCollector extends
 	}
 
 	public Double getPartial() {
-		// partial does not have sense for micro.. btw it returns the micro
-		// until now
-		double tp = truePositivesCollector.getCollectedTotal();
-		double fp = falsePositivesCollector.getCollectedTotal();
+
+		double tp = truePositivesCollector.getPartial();
+		double fp = falsePositivesCollector.getPartial();
 		if (tp + fp == 0) {
 			return 0.0;
 		}
 		return (tp) / (tp + fp);
 	}
-
 }
