@@ -48,7 +48,8 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 
 	List<MetricValuesCollector<?>> collectors = new LinkedList<MetricValuesCollector<?>>();
 
-	public HTMLResultsAppender(String htmlFile) {
+	public HTMLResultsAppender(String htmlFile,
+			AnnotatedSpotComparator comparator) {
 		bw = IOUtils.getPlainOrCompressedUTF8Writer(htmlFile);
 		html = new Html(bw);
 		html.html();
@@ -93,7 +94,11 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 		html.end();
 		html.body();
 		html.div().classAttr("container");
-		html.h1().text("Dexter Eval").end();
+		html.h1().text("Dexter Eval [" + htmlFile + "]").end();
+		html.strong().text("Comparator: ").end();
+		html.p()
+				.text(comparator.getName() + ": " + comparator.getDescription())
+				.end();
 
 	}
 
@@ -121,7 +126,7 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 					.text("[more]").end().a()
 					.onclick("less('" + goldenTruth.get(0).getDocId() + "')")
 					.text("[less]").end().end();
-			html.div().classAttr("tp col-md-offset-2 span10 main");
+			html.div().classAttr("sum col-md-offset-2 span10 main");
 			html.table().classAttr("main");
 			html.thead();
 			html.tr();
@@ -198,19 +203,19 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 			html.td().text(String.valueOf(i + 1)).end();
 			AnnotatedSpot s = tpGoldenTruth.get(i);
 			AnnotatedSpot t = tpPredictions.get(i);
-			html.td().text(cleanMention(s.getSpot())).end();
+			html.td().strong().text(cleanMention(s.getSpot())).end().end();
 			html.td().text(cleanMention(t.getSpot())).end();
 
-			html.td().text("" + s.getStart()).end();
+			html.td().strong().text("" + s.getStart()).end().end();
 			html.td().text("" + t.getStart()).end();
 
-			html.td().text("" + s.getEnd()).end();
+			html.td().strong().text("" + s.getEnd()).end().end();
 			html.td().text("" + t.getEnd()).end();
 
-			html.td().text(s.getEntity()).end();
+			html.td().strong().text(s.getEntity()).end().end();
 			html.td().text(t.getEntity()).end();
 
-			html.td().text(s.getWikiname()).end();
+			html.td().strong().text(s.getWikiname()).end().end();
 
 			html.td().text(t.getWikiname()).end();
 			html.td().text(String.format("%.3f", t.getConfidenceScore())).end();
@@ -227,16 +232,16 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 		html.thead();
 		html.tr();
 		html.th().text("Id").end();
-		html.th().text("Tagger mention").end();
+		html.th().text("Golden Truth mention").end();
 
-		html.th().text("Tagger start").end();
+		html.th().text("Golden Truth start").end();
 
-		html.th().text("Tagger end").end();
+		html.th().text("Golden Truth end").end();
 
-		html.th().text("Tagger entity").end();
+		html.th().text("Golden Truth entity").end();
 
-		html.th().text("Tagger name").end();
-		html.th().text("Tagger condidence").end();
+		html.th().text("Golden Truth name").end();
+		// html.th().text("Condidence").end();
 		html.end();
 		html.end();
 		html.tbody();
@@ -254,7 +259,8 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 			html.td().text(t.getEntity()).end();
 
 			html.td().text(t.getWikiname()).end();
-			html.td().text(String.format("%.3f", t.getConfidenceScore())).end();
+			// html.td().text(String.format("%.3f",
+			// t.getConfidenceScore())).end();
 
 			html.end();
 
@@ -325,6 +331,44 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 	}
 
 	public void end() {
+		html.div().classAttr("row").id("summary");
+		html.h2().text("Summary").end();
+		html.div().classAttr("sum col-md-offset-2 span10 main");
+		html.table().classAttr("main");
+		html.thead();
+		html.tr();
+		for (MetricValuesCollector<?> collector : collectors) {
+
+			html.th().text(collector.getName()).end();
+
+		}
+		html.end();
+		html.end();
+		html.tbody();
+		html.tr();
+		for (MetricValuesCollector<?> collector : collectors) {
+			html.td();
+			Object o = collector.getScore();
+			double f = 0;
+			if (o instanceof Integer) {
+				int i = ((Integer) o).intValue();
+				html.text(String.format("%d", i)).end();
+				continue;
+			}
+
+			if (o instanceof Float) {
+				f = (Float) (o);
+			}
+			if (o instanceof Double) {
+				f = (Double) o;
+			}
+			html.text(String.format("%.3f", f)).end();
+
+		}
+		html.end();
+		html.end();
+		html.end();
+		html.end();
 
 		html.endAll();
 		try {
