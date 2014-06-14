@@ -15,7 +15,6 @@
  */
 package it.cnr.isti.hpc.dexter.eval.cmp;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 
@@ -36,10 +35,20 @@ public class ComparatorTests {
 		WeakMentionComparator comparator = new WeakMentionComparator();
 		assertTrue(comparator.match(leonardo, leonardo2));
 		assertTrue(comparator.match(leonardo2, leonardo));
-		assertFalse(comparator.match(leonardo2, vinci));
-		assertFalse(comparator.match(vinci, leonardo2));
-		assertFalse(comparator.match(leonardo, vinci));
-		assertFalse(comparator.match(vinci, leonardo));
+	}
+
+	@Test
+	public void sameSpotComparator2() {
+		AnnotatedSpot vinci = new AnnotatedSpot("da vinci");
+		AnnotatedSpot leonardo2 = new AnnotatedSpot("leonardo da vinci");
+		vinci.setStart(8794);
+		vinci.setEnd(8804);
+		leonardo2.setStart(8790);
+		leonardo2.setEnd(8801);
+		WeakMentionComparator comparator = new WeakMentionComparator();
+		assertTrue(comparator.match(vinci, leonardo2));
+		assertTrue(comparator.match(leonardo2, vinci));
+
 	}
 
 }

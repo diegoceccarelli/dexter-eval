@@ -35,7 +35,7 @@ import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 public class WeakAnnotationMatchComparator implements AnnotatedSpotComparator {
 
 	public boolean match(AnnotatedSpot x, AnnotatedSpot y) {
-		if (x.getEntity().equals(y.getEntity()))
+		if (!x.getEntity().equals(y.getEntity()))
 			return false;
 
 		if ((x.getStart() >= y.getStart()) && (x.getStart() <= y.getEnd())) {
@@ -57,6 +57,6 @@ public class WeakAnnotationMatchComparator implements AnnotatedSpotComparator {
 	}
 
 	public String getDescription() {
-		return "two AnnotatedSpots are the same if they are annotated with the same entity and window of texts where the two annotation was performed overlap";
+		return "two mentions match if they are annotated with the same entity and they overlap in the text";
 	}
 }

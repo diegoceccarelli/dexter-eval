@@ -18,6 +18,7 @@ package it.cnr.isti.hpc.dexter.eval.metrics;
 import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,19 +35,20 @@ import java.util.List;
  */
 public class TruePositiveMetric implements Metric<Integer> {
 
+	MetricUtil metric = new MetricUtil();
+
 	public Integer eval(List<AnnotatedSpot> predictions,
 			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator) {
-		int tp = 0;
-		for (AnnotatedSpot spot : predictions) {
-			for (AnnotatedSpot goldSpot : goldenTruth) {
-				if (comparator.match(spot, goldSpot)) {
-					tp += 1;
-					continue;
-				}
-			}
-		}
 
-		return tp;
+		List<AnnotatedSpot> tp = new ArrayList<AnnotatedSpot>();
+		List<AnnotatedSpot> tpgt = new ArrayList<AnnotatedSpot>();
+		List<AnnotatedSpot> fp = new ArrayList<AnnotatedSpot>();
+
+		List<AnnotatedSpot> fn = new ArrayList<AnnotatedSpot>();
+
+		metric.intersect(predictions, goldenTruth, tp, tpgt, fp, fn, comparator);
+
+		return tp.size();
 
 	}
 

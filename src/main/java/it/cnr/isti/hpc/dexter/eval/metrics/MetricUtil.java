@@ -36,10 +36,15 @@ public class MetricUtil {
 			List<AnnotatedSpot> goldenTruth, List<AnnotatedSpot> tpPredictions,
 			List<AnnotatedSpot> tpGoldenTruth, List<AnnotatedSpot> fp,
 			List<AnnotatedSpot> fn, AnnotatedSpotComparator comparator) {
+		Collections.sort(predictions, new AnnotatedSpot.SortByStart());
+		Collections.sort(goldenTruth, new AnnotatedSpot.SortByStart());
 		for (AnnotatedSpot spot : predictions) {
 			boolean found = false;
+			// System.out.println(spot);
 			for (AnnotatedSpot goldSpot : goldenTruth) {
-				if (comparator.match(spot, goldSpot)) {
+				// System.out.println("> Comparing with " + goldSpot);
+				if (comparator.match(spot, goldSpot)
+						&& !tpGoldenTruth.contains(goldSpot)) {
 					tpPredictions.add(spot);
 					tpGoldenTruth.add(goldSpot);
 					found = true;
@@ -47,10 +52,14 @@ public class MetricUtil {
 				}
 			}
 			if (!found) {
+				// System.out.println("NOT FOUND");
 				// if I've not matched the spot with a goldSpot, then
 				// it's a false positive
 				fp.add(spot);
+			} else {
+				// System.out.println("FOUND");
 			}
+
 		}
 		for (AnnotatedSpot goldSpot : goldenTruth) {
 			if (!tpGoldenTruth.contains(goldSpot)) {
@@ -66,5 +75,4 @@ public class MetricUtil {
 		return;
 
 	}
-
 }
