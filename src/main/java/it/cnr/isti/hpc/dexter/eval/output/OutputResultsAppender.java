@@ -45,6 +45,9 @@ public interface OutputResultsAppender {
 	public void appendPartial(List<AnnotatedSpot> prediction,
 			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator);
 
+	public void appendPartial(String text, List<AnnotatedSpot> prediction,
+			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator);
+
 	/**
 	 * Receive a final result
 	 */

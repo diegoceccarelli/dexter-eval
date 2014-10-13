@@ -130,4 +130,10 @@ public class ConsoleResultsAppender implements OutputResultsAppender {
 		collectors.add(collector);
 
 	}
+
+	public void appendPartial(String text, List<AnnotatedSpot> prediction,
+			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator) {
+		// TODO Auto-generated method stub
+
+	}
 }

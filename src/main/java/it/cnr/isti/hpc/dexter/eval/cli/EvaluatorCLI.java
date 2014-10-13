@@ -21,6 +21,7 @@ import it.cnr.isti.hpc.dexter.eval.Evaluator;
 import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import it.cnr.isti.hpc.dexter.eval.cmp.ComparatorFactory;
 import it.cnr.isti.hpc.dexter.eval.output.ConsoleResultsAppender;
+import it.cnr.isti.hpc.dexter.eval.output.HTMLDirResultsAppender;
 import it.cnr.isti.hpc.dexter.eval.output.HTMLResultsAppender;
 import it.cnr.isti.hpc.dexter.eval.output.OutputResultsAppender;
 import it.cnr.isti.hpc.dexter.eval.reader.AnnotatedSpotReader;
@@ -86,6 +87,10 @@ public class EvaluatorCLI extends AbstractCommandLineInterface {
 		String output = cli.getOutput();
 		if (output.endsWith(".html")) {
 			appender = new HTMLResultsAppender(output, asc);
+			evaluator.addAppender(appender);
+		}
+		if (output.endsWith(".eval")) {
+			appender = new HTMLDirResultsAppender(output, asc);
 			evaluator.addAppender(appender);
 		}
 		appender = new ConsoleResultsAppender();

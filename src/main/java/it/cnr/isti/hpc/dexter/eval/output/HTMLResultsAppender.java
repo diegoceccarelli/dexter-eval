@@ -171,6 +171,7 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 
 		utils.intersect(predictions, goldenTruth, tpPredictions, tpGoldenTruth,
 				fp, fn, comparator);
+
 		html.div().id(goldenTruth.get(0).getDocId() + "-detail")
 				.classAttr("detail");
 		html.div().classAttr("tp col-md-offset-2 span10 eval ");
@@ -382,6 +383,12 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 
 	public void register(MetricValuesCollector collector) {
 		collectors.add(collector);
+
+	}
+
+	public void appendPartial(String text, List<AnnotatedSpot> prediction,
+			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator) {
+		// TODO Auto-generated method stub
 
 	}
 }

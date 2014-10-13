@@ -29,4 +29,8 @@ import java.util.List;
  */
 public interface AnnotatedSpotReader extends Iterator<List<AnnotatedSpot>> {
 	public String getCurrentDocId();
+
+	public boolean hasText();
+
+	public String getText();
 }

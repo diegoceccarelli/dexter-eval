@@ -92,4 +92,12 @@ public class TsvAnnotatedSpotReader implements AnnotatedSpotReader {
 
 	}
 
+	public boolean hasText() {
+		return false;
+	}
+
+	public String getText() {
+		return "";
+	}
+
 }

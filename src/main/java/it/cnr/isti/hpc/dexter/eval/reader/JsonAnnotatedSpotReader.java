@@ -36,6 +36,7 @@ public class JsonAnnotatedSpotReader implements AnnotatedSpotReader {
 
 	private String currentDocId = "NOID";
 	private final Iterator<AssessmentRecord> iterator;
+	AssessmentRecord rec;
 
 	public JsonAnnotatedSpotReader(String annotatedSpotFile) {
 		this(new File(annotatedSpotFile));
@@ -53,7 +54,7 @@ public class JsonAnnotatedSpotReader implements AnnotatedSpotReader {
 	}
 
 	public List<AnnotatedSpot> next() {
-		AssessmentRecord rec = iterator.next();
+		rec = iterator.next();
 		currentDocId = rec.getDocId();
 		return rec.getAnnotatedSpot();
 	}
@@ -65,6 +66,14 @@ public class JsonAnnotatedSpotReader implements AnnotatedSpotReader {
 	public void remove() {
 		throw new UnsupportedOperationException();
 
+	}
+
+	public boolean hasText() {
+		return true;
+	}
+
+	public String getText() {
+		return rec.getText();
 	}
 
 }

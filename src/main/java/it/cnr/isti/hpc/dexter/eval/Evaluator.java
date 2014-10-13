@@ -24,7 +24,6 @@ import it.cnr.isti.hpc.dexter.eval.collector.MicroFMeasureValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.collector.MicroPrecisionValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.collector.MicroRecallValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.filter.Filter;
-import it.cnr.isti.hpc.dexter.eval.filter.SameAnnotatedSpotFilter;
 import it.cnr.isti.hpc.dexter.eval.metrics.FMeasureMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.PrecisionMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.RecallMetric;
@@ -110,7 +109,7 @@ public class Evaluator {
 
 		// addPrefilter(new NoEntityFilter());
 		// addPrefilter(new NoDisambiguationFilter());
-		addPrefilter(new SameAnnotatedSpotFilter(comparator));
+		// addPrefilter(new SameAnnotatedSpotFilter(comparator));
 
 	}
 
@@ -215,7 +214,13 @@ public class Evaluator {
 		}
 		for (OutputResultsAppender appender : outputAppenders) {
 			if (appender.isAppendPartial()) {
-				appender.appendPartial(predictions, goldenTruth, comparator);
+				if (goldenTruthReader.hasText()) {
+					appender.appendPartial(goldenTruthReader.getText(),
+							predictions, goldenTruth, comparator);
+
+				} else {
+					appender.appendPartial(predictions, goldenTruth, comparator);
+				}
 			}
 		}
 

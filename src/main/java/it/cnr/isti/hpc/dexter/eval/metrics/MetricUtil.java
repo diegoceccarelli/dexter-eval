@@ -36,6 +36,7 @@ public class MetricUtil {
 			List<AnnotatedSpot> goldenTruth, List<AnnotatedSpot> tpPredictions,
 			List<AnnotatedSpot> tpGoldenTruth, List<AnnotatedSpot> fp,
 			List<AnnotatedSpot> fn, AnnotatedSpotComparator comparator) {
+
 		Collections.sort(predictions, new AnnotatedSpot.SortByStart());
 		Collections.sort(goldenTruth, new AnnotatedSpot.SortByStart());
 		for (AnnotatedSpot spot : predictions) {

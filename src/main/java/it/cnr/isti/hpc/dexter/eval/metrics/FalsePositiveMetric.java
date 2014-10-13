@@ -44,6 +44,7 @@ public class FalsePositiveMetric implements Metric<Integer> {
 		List<AnnotatedSpot> fn = new ArrayList<AnnotatedSpot>();
 
 		metric.intersect(predictions, goldenTruth, tp, tpgt, fp, fn, comparator);
+
 		return fp.size();
 	}
 
