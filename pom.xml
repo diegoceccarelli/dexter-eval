@@ -71,6 +71,11 @@
 			<url>https://dl.dropboxusercontent.com/u/4663256/mvn-repository/</url>
 		</repository>
 	</repositories>
-	
+    <distributionManagement>
+                  <repository>
+                          <id>diego's dropbox</id>
+                          <url>file:///Users/diego/Dropbox/Public/mvn-repository/</url>
+                  </repository>
+          </distributionManagement>
 	
 </project>
