@@ -86,6 +86,7 @@ public class EvaluatorCLI extends AbstractCommandLineInterface {
 		OutputResultsAppender appender;
 		String output = cli.getOutput();
 		if (output.endsWith(".html")) {
+
 			appender = new HTMLResultsAppender(output, asc);
 			evaluator.addAppender(appender);
 		}

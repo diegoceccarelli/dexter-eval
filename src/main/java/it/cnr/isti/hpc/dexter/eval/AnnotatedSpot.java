@@ -23,6 +23,7 @@ import java.util.Comparator;
  *         Created on Feb 16, 2014
  */
 public class AnnotatedSpot {
+
 	String docId;
 	String spot;
 	int start;
@@ -156,6 +157,14 @@ public class AnnotatedSpot {
 			if (o1.getConfidenceScore() < o2.getConfidenceScore())
 				return 1;
 			return 0;
+		}
+
+	}
+
+	public static class SortByWikiId implements Comparator<AnnotatedSpot> {
+
+		public int compare(AnnotatedSpot o1, AnnotatedSpot o2) {
+			return o2.getEntity().compareTo(o1.getEntity());
 		}
 
 	}

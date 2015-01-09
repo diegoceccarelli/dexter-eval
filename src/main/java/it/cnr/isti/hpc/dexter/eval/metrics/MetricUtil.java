@@ -17,8 +17,10 @@ package it.cnr.isti.hpc.dexter.eval.metrics;
 
 import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
+import it.cnr.isti.hpc.dexter.eval.cmp.EntityComparator;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -36,9 +38,13 @@ public class MetricUtil {
 			List<AnnotatedSpot> goldenTruth, List<AnnotatedSpot> tpPredictions,
 			List<AnnotatedSpot> tpGoldenTruth, List<AnnotatedSpot> fp,
 			List<AnnotatedSpot> fn, AnnotatedSpotComparator comparator) {
+		Comparator<AnnotatedSpot> cmp = new AnnotatedSpot.SortByStart();
+		if (comparator instanceof EntityComparator) {
+			cmp = new AnnotatedSpot.SortByWikiId();
+		}
 
-		Collections.sort(predictions, new AnnotatedSpot.SortByStart());
-		Collections.sort(goldenTruth, new AnnotatedSpot.SortByStart());
+		Collections.sort(predictions, cmp);
+		Collections.sort(goldenTruth, cmp);
 		for (AnnotatedSpot spot : predictions) {
 			boolean found = false;
 			// System.out.println(spot);
@@ -68,10 +74,10 @@ public class MetricUtil {
 			}
 		}
 
-		Collections.sort(fp, new AnnotatedSpot.SortByStart());
-		Collections.sort(fn, new AnnotatedSpot.SortByStart());
-		Collections.sort(tpPredictions, new AnnotatedSpot.SortByStart());
-		Collections.sort(tpGoldenTruth, new AnnotatedSpot.SortByStart());
+		Collections.sort(fp, cmp);
+		Collections.sort(fn, cmp);
+		Collections.sort(tpPredictions, cmp);
+		Collections.sort(tpGoldenTruth, cmp);
 
 		return;
 

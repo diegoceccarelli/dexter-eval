@@ -27,6 +27,12 @@
 			<artifactId>jatl</artifactId>
 			<version>0.2.2</version>
 		</dependency>
+		<dependency>
+			<groupId>it.cnr.isti.hpc</groupId>
+			<artifactId>dexter-eval</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+
+		</dependency>
 
 
 	</dependencies>
@@ -65,4 +71,6 @@
 			<url>https://dl.dropboxusercontent.com/u/4663256/mvn-repository/</url>
 		</repository>
 	</repositories>
+	
+	
 </project>

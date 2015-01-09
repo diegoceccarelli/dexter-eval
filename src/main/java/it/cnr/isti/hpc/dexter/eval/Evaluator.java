@@ -24,6 +24,7 @@ import it.cnr.isti.hpc.dexter.eval.collector.MicroFMeasureValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.collector.MicroPrecisionValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.collector.MicroRecallValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.filter.Filter;
+import it.cnr.isti.hpc.dexter.eval.filter.SameAnnotatedSpotFilter;
 import it.cnr.isti.hpc.dexter.eval.metrics.FMeasureMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.PrecisionMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.RecallMetric;
@@ -109,7 +110,7 @@ public class Evaluator {
 
 		// addPrefilter(new NoEntityFilter());
 		// addPrefilter(new NoDisambiguationFilter());
-		// addPrefilter(new SameAnnotatedSpotFilter(comparator));
+		addPrefilter(new SameAnnotatedSpotFilter(comparator));
 
 	}
 

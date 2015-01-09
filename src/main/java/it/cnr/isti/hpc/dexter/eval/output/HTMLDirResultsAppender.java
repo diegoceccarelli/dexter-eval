@@ -19,7 +19,6 @@ import it.cnr.isti.hpc.dexter.eval.AnnotatedSpot;
 import it.cnr.isti.hpc.dexter.eval.cmp.AnnotatedSpotComparator;
 import it.cnr.isti.hpc.dexter.eval.collector.MetricValuesCollector;
 import it.cnr.isti.hpc.dexter.eval.metrics.MetricUtil;
-import it.cnr.isti.hpc.dexter.eval.reader.CharacterOffsetToByteOffsetCalculator;
 import it.cnr.isti.hpc.io.IOUtils;
 
 import java.io.BufferedWriter;
@@ -172,13 +171,14 @@ public class HTMLDirResultsAppender implements OutputResultsAppender {
 			all.addAll(fn);
 			Collections.sort(all, new AnnotatedSpot.SortByStart());
 
-			CharacterOffsetToByteOffsetCalculator calc = new CharacterOffsetToByteOffsetCalculator();
-			calc.loadString(text);
+			// CharacterOffsetToByteOffsetCalculator calc = new
+			// CharacterOffsetToByteOffsetCalculator();
+			// calc.loadString(text);
 
-			for (AnnotatedSpot as : all) {
-				as.setStart(calc.getCharacterOffset(as.getStart()));
-				as.setEnd(calc.getCharacterOffset(as.getEnd()));
-			}
+			// for (AnnotatedSpot as : all) {
+			// as.setStart(calc.getCharacterOffset(as.getStart()));
+			// as.setEnd(calc.getCharacterOffset(as.getEnd()));
+			// }
 
 			int last = 0;
 			for (AnnotatedSpot as : all) {

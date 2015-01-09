@@ -117,6 +117,7 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 
 	public void appendPartial(List<AnnotatedSpot> predictions,
 			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator) {
+
 		if (goldenTruth.isEmpty()) {
 			logger.warn("empty golden truth!");
 		} else {
@@ -388,7 +389,6 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 
 	public void appendPartial(String text, List<AnnotatedSpot> prediction,
 			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator) {
-		// TODO Auto-generated method stub
-
+		appendPartial(prediction, goldenTruth, comparator);
 	}
 }
