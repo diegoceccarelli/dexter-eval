@@ -66,7 +66,10 @@ public class RecallWeightedMetric implements Metric<Double> {
 			sum_scores_fn += spot.getConfidenceScore();
 		}
 		
-		return sum_scores_tpgt / (sum_scores_tpgt + sum_scores_fn);
+		if (sum_scores_tpgt + sum_scores_fn > 0)
+			return sum_scores_tpgt / (sum_scores_tpgt + sum_scores_fn);
+		else
+			return 0.;
 	}
 
 	public String getName() {

@@ -70,7 +70,10 @@ public class RecallRmseMetric implements Metric<Double> {
 			se += Math.pow(spot_fn.getConfidenceScore(), 2);
 		}
 		
-		return Math.sqrt( se / (tp.size() + fn.size()) );
+		if (tp.size() + fn.size() > 0)
+			return Math.sqrt( se / (tp.size() + fn.size()) );
+		else
+			return 0.;
 	}
 
 	public String getName() {
