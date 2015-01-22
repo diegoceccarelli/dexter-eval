@@ -20,11 +20,17 @@ import it.cnr.isti.hpc.dexter.eval.filter.ThresholdFilter;
 import it.cnr.isti.hpc.dexter.eval.filter.TopKFilter;
 import it.cnr.isti.hpc.dexter.eval.metrics.AnnotationsSizeMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.FMeasureMetric;
+import it.cnr.isti.hpc.dexter.eval.metrics.FRmseMetric;
+import it.cnr.isti.hpc.dexter.eval.metrics.FWeightedMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.FalseNegativeMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.FalsePositiveMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.GoldenTruthSizeMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.PrecisionMetric;
+import it.cnr.isti.hpc.dexter.eval.metrics.PrecisionRmseMetric;
+import it.cnr.isti.hpc.dexter.eval.metrics.PrecisionWeightedMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.RecallMetric;
+import it.cnr.isti.hpc.dexter.eval.metrics.RecallRmseMetric;
+import it.cnr.isti.hpc.dexter.eval.metrics.RecallWeightedMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.TruePositiveMetric;
 import it.cnr.isti.hpc.io.IOUtils;
 
@@ -150,6 +156,24 @@ public class CollectorsFactory {
 		}
 		if (name.equals("F1")) {
 			return new DoubleValuesCollector(new FMeasureMetric());
+		}
+		if (name.equals("Rw")) {
+			return new DoubleValuesCollector(new RecallWeightedMetric());
+		}
+		if (name.equals("Pw")) {
+			return new DoubleValuesCollector(new PrecisionWeightedMetric());
+		}
+		if (name.equals("F1w")) {
+			return new DoubleValuesCollector(new FWeightedMetric());
+		}
+		if (name.equals("Rrmse")) {
+			return new DoubleValuesCollector(new RecallRmseMetric());
+		}
+		if (name.equals("Prmse")) {
+			return new DoubleValuesCollector(new PrecisionRmseMetric());
+		}
+		if (name.equals("F1rmse")) {
+			return new DoubleValuesCollector(new FRmseMetric());
 		}
 		if (name.equals("microP")) {
 			return new MicroPrecisionValuesCollector();

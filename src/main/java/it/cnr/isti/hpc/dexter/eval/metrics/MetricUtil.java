@@ -34,10 +34,15 @@ public class MetricUtil {
 
 	}
 
-	public void intersect(List<AnnotatedSpot> predictions,
-			List<AnnotatedSpot> goldenTruth, List<AnnotatedSpot> tpPredictions,
-			List<AnnotatedSpot> tpGoldenTruth, List<AnnotatedSpot> fp,
-			List<AnnotatedSpot> fn, AnnotatedSpotComparator comparator) {
+	public void intersect(
+			List<AnnotatedSpot> predictions,
+			List<AnnotatedSpot> goldenTruth, 
+			List<AnnotatedSpot> tpPredictions,
+			List<AnnotatedSpot> tpGoldenTruth, 
+			List<AnnotatedSpot> fp,
+			List<AnnotatedSpot> fn, 
+			AnnotatedSpotComparator comparator) {
+
 		Comparator<AnnotatedSpot> cmp = new AnnotatedSpot.SortByStart();
 		if (comparator instanceof EntityComparator) {
 			cmp = new AnnotatedSpot.SortByWikiId();
@@ -50,8 +55,7 @@ public class MetricUtil {
 			// System.out.println(spot);
 			for (AnnotatedSpot goldSpot : goldenTruth) {
 				// System.out.println("> Comparing with " + goldSpot);
-				if (comparator.match(spot, goldSpot)
-						&& !tpGoldenTruth.contains(goldSpot)) {
+				if (comparator.match(spot, goldSpot) && !tpGoldenTruth.contains(goldSpot)) {
 					tpPredictions.add(spot);
 					tpGoldenTruth.add(goldSpot);
 					found = true;
