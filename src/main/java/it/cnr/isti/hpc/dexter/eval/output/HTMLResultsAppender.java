@@ -120,50 +120,55 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 
 		if (goldenTruth.isEmpty()) {
 			logger.warn("empty golden truth!");
-		} else {
-			html.div().classAttr("row").id(goldenTruth.get(0).getDocId()).h3()
-					.text(goldenTruth.get(0).getDocId());
-			html.a().onclick("moar('" + goldenTruth.get(0).getDocId() + "')")
-					.text("[more]").end().a()
-					.onclick("less('" + goldenTruth.get(0).getDocId() + "')")
-					.text("[less]").end().end();
-			html.div().classAttr("sum col-md-offset-2 span10 main");
-			html.table().classAttr("main");
-			html.thead();
-			html.tr();
-			for (MetricValuesCollector<?> collector : collectors) {
-
-				html.th().text(collector.getName()).end();
-
-			}
-			html.end();
-			html.end();
-			html.tbody();
-			html.tr();
-			for (MetricValuesCollector<?> collector : collectors) {
-				html.td();
-				Object o = collector.getPartial();
-				double f = 0;
-				if (o instanceof Integer) {
-					int i = ((Integer) o).intValue();
-					html.text(String.format("%d", i)).end();
-					continue;
-				}
-
-				if (o instanceof Float) {
-					f = (Float) (o);
-				}
-				if (o instanceof Double) {
-					f = (Double) o;
-				}
-				html.text(String.format("%.3f", f)).end();
-
-			}
-			html.end();
-			html.end();
-			html.end();
-			html.end();
 		}
+		String docId = "";
+		if (goldenTruth.isEmpty()) {
+			if (!predictions.isEmpty()) {
+				docId = predictions.get(0).getDocId();
+			}
+		} else {
+			docId = goldenTruth.get(0).getDocId();
+		}
+
+		html.div().classAttr("row").id(docId).h3().text(docId);
+		html.a().onclick("moar('" + docId + "')").text("[more]").end().a()
+				.onclick("less('" + docId + "')").text("[less]").end().end();
+		html.div().classAttr("sum col-md-offset-2 span10 main");
+		html.table().classAttr("main");
+		html.thead();
+		html.tr();
+		for (MetricValuesCollector<?> collector : collectors) {
+
+			html.th().text(collector.getName()).end();
+
+		}
+		html.end();
+		html.end();
+		html.tbody();
+		html.tr();
+		for (MetricValuesCollector<?> collector : collectors) {
+			html.td();
+			Object o = collector.getPartial();
+			double f = 0;
+			if (o instanceof Integer) {
+				int i = ((Integer) o).intValue();
+				html.text(String.format("%d", i)).end();
+				continue;
+			}
+
+			if (o instanceof Float) {
+				f = (Float) (o);
+			}
+			if (o instanceof Double) {
+				f = (Double) o;
+			}
+			html.text(String.format("%.3f", f)).end();
+
+		}
+		html.end();
+		html.end();
+		html.end();
+		html.end();
 
 		List<AnnotatedSpot> tpPredictions = new ArrayList<AnnotatedSpot>();
 		List<AnnotatedSpot> tpGoldenTruth = new ArrayList<AnnotatedSpot>();
@@ -173,8 +178,7 @@ public class HTMLResultsAppender implements OutputResultsAppender {
 		utils.intersect(predictions, goldenTruth, tpPredictions, tpGoldenTruth,
 				fp, fn, comparator);
 
-		html.div().id(goldenTruth.get(0).getDocId() + "-detail")
-				.classAttr("detail");
+		html.div().id(docId + "-detail").classAttr("detail");
 		html.div().classAttr("tp col-md-offset-2 span10 eval ");
 		html.h3().text("True Positives").end();
 		html.table().classAttr("tp table table-striped");
