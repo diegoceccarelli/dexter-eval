@@ -95,8 +95,13 @@ public class EvaluatorCLI extends AbstractCommandLineInterface {
 			evaluator.addAppender(appender);
 		}
 		appender = new ConsoleResultsAppender();
+
+		// appender.setPartial(true);
 		evaluator.addAppender(appender);
 
 		evaluator.run();
+		System.out.println("document evaluated = "
+				+ evaluator.getDocumentEvaluated());
 	}
+
 }

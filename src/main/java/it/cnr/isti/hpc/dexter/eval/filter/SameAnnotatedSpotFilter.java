@@ -62,9 +62,9 @@ public class SameAnnotatedSpotFilter implements Filter {
 			for (AnnotatedSpot f : filtered) {
 				if (comparator.match(s, f)) {
 					found = true;
-					logger.warn("Based on the comparator, an identical spot is yet in the list, I'll ignore it");
-					logger.warn("spot in the list (the longer): {}", f);
-					logger.warn("ignored spot: {}", s);
+					// logger.warn("Based on the comparator, an identical spot is yet in the list, I'll ignore it");
+					// logger.warn("spot in the list (the longer): {}", f);
+					// logger.warn("ignored spot: {}", s);
 				}
 			}
 			if (!found) {

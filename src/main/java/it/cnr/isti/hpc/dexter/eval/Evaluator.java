@@ -59,6 +59,7 @@ public class Evaluator {
 	private final AnnotatedSpotComparator comparator;
 	private final AnnotatedSpotReader predictionsReader;
 	private final AnnotatedSpotReader goldenTruthReader;
+	private int documentEvaluated = 0;
 
 	private boolean debug = false;
 
@@ -76,7 +77,7 @@ public class Evaluator {
 
 		this.comparator = comparator;
 
-		collectors = new LinkedList<MetricValuesCollector<?>>();
+		collectors = new ArrayList<MetricValuesCollector<?>>();
 		this.predictionsReader = predictionsReader;
 		this.goldenTruthReader = goldenTruthReader;
 		String collectorsFile = System.getProperty("metrics");
@@ -128,32 +129,38 @@ public class Evaluator {
 	public void run() {
 
 		List<AnnotatedSpot> predictions = predictionsReader.next();
+		List<AnnotatedSpot> goldenTruth = null;
+		List<AnnotatedSpot> emptyList = Collections.emptyList();
 		for (OutputResultsAppender appender : outputAppenders) {
 			for (MetricValuesCollector<?> collector : collectors) {
 				appender.register(collector);
 			}
 		}
 		while (this.goldenTruthReader.hasNext()) {
-			List<AnnotatedSpot> goldenTruth = goldenTruthReader.next();
+			goldenTruth = goldenTruthReader.next();
 			logger.info("processing document {} ",
 					goldenTruthReader.getCurrentDocId());
 
 			if (predictions == null) {
 				logger.warn("no prediction for doc id {} ",
 						goldenTruthReader.getCurrentDocId());
-				predictions = Collections.emptyList();
-			} else if (!predictionsReader.getCurrentDocId().equals(
+
+				eval(emptyList, goldenTruth);
+				goldenTruth = goldenTruthReader.next();
+				continue;
+			}
+			if (!predictionsReader.getCurrentDocId().equals(
 					goldenTruthReader.getCurrentDocId())) {
 				logger.warn(
 						"current document in predictions {} does not match current document in golden truth {}. List must be sorted by docid",
 						predictionsReader.getCurrentDocId(),
 						goldenTruthReader.getCurrentDocId());
-			} else {
-				eval(predictions, goldenTruth);
-				if (predictionsReader.hasNext()) {
-					predictions = predictionsReader.next();
-				}
+				logger.warn("assuming empty predictions");
+				eval(emptyList, goldenTruth);
+				continue;
 			}
+			eval(predictions, goldenTruth);
+			predictions = predictionsReader.next();
 
 		}
 
@@ -204,9 +211,13 @@ public class Evaluator {
 		return annotations;
 	}
 
+	public int getDocumentEvaluated() {
+		return documentEvaluated;
+	}
+
 	public void eval(List<AnnotatedSpot> predictions,
 			List<AnnotatedSpot> goldenTruth) {
-
+		documentEvaluated += 1;
 		logger.info("filtering goldenTruth");
 		goldenTruth = prefilter(goldenTruth);
 

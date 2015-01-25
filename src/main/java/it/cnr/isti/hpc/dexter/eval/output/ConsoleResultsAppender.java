@@ -133,7 +133,7 @@ public class ConsoleResultsAppender implements OutputResultsAppender {
 
 	public void appendPartial(String text, List<AnnotatedSpot> prediction,
 			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator) {
-		// TODO Auto-generated method stub
+		appendPartial(prediction, goldenTruth, comparator);
 
 	}
 }

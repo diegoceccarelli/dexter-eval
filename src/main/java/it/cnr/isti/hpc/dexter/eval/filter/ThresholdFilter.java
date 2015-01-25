@@ -43,7 +43,34 @@ public class ThresholdFilter implements Filter {
 			if (s.getConfidenceScore() >= threshold) {
 				filtered.add(s);
 			}
+
 		}
+
+		boolean debug = false;
+		String dbg = System.getProperty("debug");
+		if (dbg != null) {
+			debug = new Boolean(dbg);
+		}
+		if (debug) {
+			System.out.println("---------- " + this.getClass()
+					+ " ------------");
+			System.out.println("filter thres = " + threshold);
+
+			String value = String.format("%-70s%s", "before", "after");
+			System.out.println(value);
+			for (int i = 0; i < spots.size(); i++) {
+				if (i < filtered.size()) {
+					value = String.format("%-70s%s", spots.get(i).asString(),
+							filtered.get(i).asString());
+				} else {
+					value = String.format("%-70s%s", spots.get(i).asString(),
+							"");
+				}
+				System.out.println(value);
+			}
+
+		}
+
 		return filtered;
 	}
 

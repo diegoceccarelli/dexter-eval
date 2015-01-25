@@ -4,8 +4,8 @@ source ./scripts/config.sh
 EXPECTED_ARGS=4 
 
 METRICS=metrics.txt
-#DEBUG=False
-DEBUG=true
+DEBUG=False
+#DEBUG=true
 
 if [ $# -ne $EXPECTED_ARGS  ] && [ $# -ne 5 ]
 then

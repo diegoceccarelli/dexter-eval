@@ -29,6 +29,7 @@ public class GoldenTruthSizeMetric implements Metric<Integer> {
 
 	public Integer eval(List<AnnotatedSpot> predictions,
 			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator) {
+
 		return goldenTruth.size();
 	}
 
