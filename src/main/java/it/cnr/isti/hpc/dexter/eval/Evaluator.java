@@ -160,7 +160,11 @@ public class Evaluator {
 				continue;
 			}
 			eval(predictions, goldenTruth);
-			predictions = predictionsReader.next();
+			if (predictionsReader.hasNext()) {
+				predictions = predictionsReader.next();
+			} else {
+				predictions = emptyList;
+			}
 
 		}
 
