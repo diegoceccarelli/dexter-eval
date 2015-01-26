@@ -63,8 +63,12 @@ public class PrecisionWeightedMetric implements Metric<Double> {
 			sum_scores_tpgt += spot.getConfidenceScore();
 		}
 		
-		// It consider each FP with a factor 1 in the denominator
-		return sum_scores_tpgt / (sum_scores_tpgt + fp.size() * 1);
+		if (sum_scores_tpgt + fp.size() > 0) {
+			// It consider each FP with a factor 1 in the denominator
+			return sum_scores_tpgt / (sum_scores_tpgt + fp.size() * 1);
+		} else {
+			return 0.;
+		}
 	}
 
 	public String getName() {

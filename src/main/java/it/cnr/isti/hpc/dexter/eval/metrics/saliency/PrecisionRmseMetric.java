@@ -41,38 +41,42 @@ import java.util.List;
 public class PrecisionRmseMetric implements Metric<Double> {
 
 	MetricUtil metric;
-	
+
 	public PrecisionRmseMetric() {
 		metric = new MetricUtil();
 	}
 
-	public Double eval(
-			List<AnnotatedSpot> predictions,
-			List<AnnotatedSpot> goldenTruth, 
-			AnnotatedSpotComparator comparator) {
-		
+	public Double eval(List<AnnotatedSpot> predictions,
+			List<AnnotatedSpot> goldenTruth, AnnotatedSpotComparator comparator) {
+
 		List<AnnotatedSpot> tp = new ArrayList<AnnotatedSpot>();
 		List<AnnotatedSpot> tpgt = new ArrayList<AnnotatedSpot>();
 		List<AnnotatedSpot> fp = new ArrayList<AnnotatedSpot>();
 		List<AnnotatedSpot> fn = new ArrayList<AnnotatedSpot>();
 
 		metric.intersect(predictions, goldenTruth, tp, tpgt, fp, fn, comparator);
-		
+
 		double se = 0;
-		for (AnnotatedSpot spot_tpgt: tpgt) {
-			for (AnnotatedSpot spot_tp: tp) {
+		for (AnnotatedSpot spot_tpgt : tpgt) {
+			for (AnnotatedSpot spot_tp : tp) {
 				if (comparator.match(spot_tp, spot_tpgt)) {
-					se += Math.pow(spot_tp.getConfidenceScore() - spot_tpgt.getConfidenceScore(), 2);
+					se += Math.pow(
+							spot_tp.getConfidenceScore()
+									- spot_tpgt.getConfidenceScore(), 2);
 					break;
 				}
 			}
 		}
-		
-		for (AnnotatedSpot spot_fp: fp) {
+
+		for (AnnotatedSpot spot_fp : fp) {
 			se += Math.pow(spot_fp.getConfidenceScore(), 2);
 		}
-		
-		return Math.sqrt( se / (tp.size() + fp.size()) );
+
+		if (tp.size() + fp.size() > 0) {
+			return Math.sqrt(se / (tp.size() + fp.size()));
+		} else {
+			return 0.;
+		}
 	}
 
 	public String getName() {
