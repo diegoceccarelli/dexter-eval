@@ -50,20 +50,20 @@ public class NDCGMetric implements Metric<Double> {
 		for (int i = 0; i < predictions.size(); i++) {
 
 			AnnotatedSpot p = predictions.get(i);
-			System.out.println((i + 1) + ") Entity " + p.asString());
+			// System.out.println((i + 1) + ") Entity " + p.asString());
 			double pos = i + 1;
 			for (AnnotatedSpot g : goldenTruth) {
 				if (comparator.match(p, g)) {
-					System.out.println("Match: entity " + g.asString());
+					// System.out.println("Match: entity " + g.asString());
 					tp.add(g);
-					double rel = g.getConfidenceScore() + 1;
-					System.out.println("Match: adding " + rel
-							/ (Math.log10(pos + 1) / Math.log10(2)));
+					double rel = g.getConfidenceScore();
+					// System.out.println("Match: adding " + rel
+					// / (Math.log10(pos + 1) / Math.log10(2)));
 					dcg += rel / (Math.log10(pos + 1) / Math.log10(2));
 				}
 			}
 		}
-		System.out.println("final dcg " + dcg);
+		// System.out.println("final dcg " + dcg);
 
 		double idcg = 0;
 		Collections.sort(tp, new SortByConfidence());
@@ -71,10 +71,10 @@ public class NDCGMetric implements Metric<Double> {
 		for (int i = 0; i < tp.size(); i++) {
 			AnnotatedSpot p = tp.get(i);
 			double pos = i + 1;
-			double rel = p.getConfidenceScore() + 1;
+			double rel = p.getConfidenceScore();
 			idcg += rel / (Math.log10(pos + 1) / Math.log10(2));
 		}
-		System.out.println("final idcg " + idcg);
+		// System.out.println("final idcg " + idcg);
 		if (idcg == 0)
 			return 0.0;
 
