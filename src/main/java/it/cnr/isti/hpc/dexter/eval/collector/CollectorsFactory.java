@@ -19,6 +19,7 @@ import it.cnr.isti.hpc.dexter.eval.filter.Filter;
 import it.cnr.isti.hpc.dexter.eval.filter.ThresholdFilter;
 import it.cnr.isti.hpc.dexter.eval.filter.TopKFilter;
 import it.cnr.isti.hpc.dexter.eval.metrics.AnnotationsSizeMetric;
+import it.cnr.isti.hpc.dexter.eval.metrics.FBetaMeasureMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.FMeasureMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.FalseNegativeMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.FalsePositiveMetric;
@@ -160,6 +161,9 @@ public class CollectorsFactory {
 		}
 		if (name.equals("F1")) {
 			return new DoubleValuesCollector(new FMeasureMetric());
+		}
+		if (name.equals("F2")) {
+			return new DoubleValuesCollector(new FBetaMeasureMetric(2));
 		}
 		if (name.equals("Rw")) {
 			return new DoubleValuesCollector(new RecallWeightedMetric());
