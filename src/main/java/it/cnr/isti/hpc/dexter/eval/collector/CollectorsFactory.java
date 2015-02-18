@@ -30,6 +30,7 @@ import it.cnr.isti.hpc.dexter.eval.metrics.TruePositiveMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.saliency.FRmseMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.saliency.FWeightedMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.saliency.NDCGMetric;
+import it.cnr.isti.hpc.dexter.eval.metrics.saliency.NDCGRelMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.saliency.PrecisionRmseMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.saliency.PrecisionWeightedMetric;
 import it.cnr.isti.hpc.dexter.eval.metrics.saliency.RecallRmseMetric;
@@ -219,6 +220,9 @@ public class CollectorsFactory {
 		}
 		if (name.equals("ndcg")) {
 			return new DoubleValuesCollector(new NDCGMetric());
+		}
+		if (name.equals("ndcgr")) {
+			return new DoubleValuesCollector(new NDCGRelMetric());
 		}
 		logger.error("cannot find collector with name {} ", name);
 		return null;
