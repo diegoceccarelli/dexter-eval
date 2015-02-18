@@ -66,10 +66,10 @@ public class NDCGMetric implements Metric<Double> {
 		// System.out.println("final dcg " + dcg);
 
 		double idcg = 0;
-		Collections.sort(tp, new SortByConfidence());
+		Collections.sort(goldenTruth, new SortByConfidence());
 
-		for (int i = 0; i < tp.size(); i++) {
-			AnnotatedSpot p = tp.get(i);
+		for (int i = 0; i < goldenTruth.size(); i++) {
+			AnnotatedSpot p = goldenTruth.get(i);
 			double pos = i + 1;
 			double rel = p.getConfidenceScore();
 			idcg += rel / (Math.log10(pos + 1) / Math.log10(2));

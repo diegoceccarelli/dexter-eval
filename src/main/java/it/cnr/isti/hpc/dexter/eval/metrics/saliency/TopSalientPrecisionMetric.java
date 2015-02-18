@@ -43,11 +43,11 @@ import java.util.List;
  */
 public class TopSalientPrecisionMetric implements Metric<Double> {
 
-	private final FalsePositiveMetric fnm;
+	private final FalsePositiveMetric fpm;
 	private final TruePositiveMetric tpm;
 
 	public TopSalientPrecisionMetric() {
-		fnm = new FalsePositiveMetric();
+		fpm = new FalsePositiveMetric();
 		tpm = new TruePositiveMetric();
 	}
 
@@ -60,12 +60,12 @@ public class TopSalientPrecisionMetric implements Metric<Double> {
 				filteredGolden.add(spot);
 			}
 		}
-		double fn = fnm.eval(predictions, filteredGolden, comparator);
+		double fp = fpm.eval(predictions, filteredGolden, comparator);
 		double tp = tpm.eval(predictions, filteredGolden, comparator);
-		if ((fn + tp) == 0) {
+		if ((fp + tp) == 0) {
 			return 0d;
 		}
-		return (tp) / (fn + tp);
+		return (tp) / (fp + tp);
 	}
 
 	public String getName() {
