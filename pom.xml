@@ -12,9 +12,9 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>it.cnr.isti.hpc</groupId>
 			<artifactId>hpc-utils</artifactId>
-			<version>0.0.5</version>
+			<groupId>com.github.diegoceccarelli</groupId>
+			<version>0.0.8</version>
 		</dependency>
 
 		<dependency>
@@ -37,8 +37,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.8</source>
+					<target>1.8</target>
 
 				</configuration>
 			</plugin>
@@ -61,8 +61,8 @@
 	</build>
 	<repositories>
 		<repository>
-			<id>dropbox</id>
-			<url>https://dl.dropboxusercontent.com/u/4663256/mvn-repository/</url>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
 		</repository>
 	</repositories>
 </project>
